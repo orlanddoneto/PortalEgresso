@@ -30,4 +30,10 @@ public class Curso {
 
     @OneToMany(mappedBy = "curso")
     private Set<Curso_Egresso> cursoEgressos = new HashSet<>();
+
+    public Curso(Integer id, String nome, String nivel) {
+        this.id = id;
+        this.nome = nome;
+        this.nivel = nivel;
+    }
 }
