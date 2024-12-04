@@ -1,6 +1,7 @@
 package com.muxegresso.egresso.repositories;
 
 import com.muxegresso.egresso.domain.Curso;
+import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,26 +40,35 @@ public class CursoRepositoryTest {
         Integer id = salvoCurso.getId();
         cursoRepository.deleteById(salvoCurso.getId());
 
-
         Optional<Curso> temp = cursoRepository.findById(id);
         Assertions.assertFalse(temp.isPresent());
     }
 
     @Test
     @DisplayName("Verifica a atualização do nome do curso")
-    public void deveVerificarAtualizacaoNomeCurso(){
-        Curso curso = new Curso(null,"testeAttNome","testeNivel");
+    public void deveVerificarAtualizacaoNomeCurso() {
+        // Gera um curso usando EasyRandom
+        EasyRandom easyRandom = new EasyRandom();
+        Curso curso = easyRandom.nextObject(Curso.class);
+
+        // Ajusta valores que não devem ser gerados automaticamente
+        curso.setId(null);
+
+        // Salva o curso no banco
         Curso salvoCurso = cursoRepository.save(curso);
 
-        curso.setNome("novoNome");
+        // Atualiza o nome do curso e salva novamente
+        salvoCurso.setNome("novoNome");
+        cursoRepository.save(salvoCurso);
 
-        salvoCurso=cursoRepository.save(curso);
+        // Recupera o curso atualizado do banco
         Curso cursoAtualizado = cursoRepository.findById(salvoCurso.getId()).orElseThrow();
 
-        Assertions.assertNotNull(cursoAtualizado);
-        Assertions.assertEquals(curso.getNome(), cursoAtualizado.getNome());
-
+        // Validações
+        Assertions.assertNotNull(cursoAtualizado, "O curso atualizado não deveria ser nulo.");
+        Assertions.assertEquals("novoNome", cursoAtualizado.getNome(), "O nome do curso não foi atualizado corretamente.");
     }
+
 
 
 }

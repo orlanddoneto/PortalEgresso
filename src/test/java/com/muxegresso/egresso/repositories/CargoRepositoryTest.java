@@ -27,15 +27,8 @@ public class CargoRepositoryTest {
     @Test
     @DisplayName("Verifica o salvamento de um cargo")
     public void deveVerificarSalvarCargo(){
-
-        //Randomizador de parametros
-        EasyRandomParameters parameters = new EasyRandomParameters()
-                .randomize(String.class, () -> "valor-default") // Personalize valores específicos
-                .stringLengthRange(5, 15);
-
-        EasyRandom easyRandom = new EasyRandom(parameters);
-
         // Gera a entidade automaticamente
+        EasyRandom easyRandom = new EasyRandom();
         Egresso egresso = easyRandom.nextObject(Egresso.class);
         Cargo cargo = easyRandom.nextObject(Cargo.class);
 
@@ -71,14 +64,21 @@ public class CargoRepositoryTest {
     @Test
     @DisplayName("Verifica a atualização da descrição de um cargo")
     public void deveVerificarAtualizacaoDescCargo(){
-        Egresso egresso = new Egresso();
 
-        Cargo cargo = new Cargo(null,"descriptionTeste", "localTeste", 2020, 2021,egresso);
+        EasyRandom easyRandom = new EasyRandom();
 
-        cargo.setDescricao("Nova_descriptionTeste");
+        // Gera um egresso e salva
+        Egresso egresso = easyRandom.nextObject(Egresso.class);
+        egresso.setId(null);
+        Egresso salvoEgresso = egressoRepository.save(egresso);
+
+        Cargo cargo = easyRandom.nextObject(Cargo.class);
+        cargo.setEgresso(salvoEgresso);
+        cargo.setId(null);
 
         Cargo salvoCargo = cargoRepository.save(cargo);
-        Cargo cargoAtualizado = cargoRepository.findById(salvoCargo.getId()).orElseThrow();
+        salvoCargo.setDescricao("DescriptionTest");
+        Cargo cargoAtualizado = cargoRepository.save(salvoCargo);
 
         Assertions.assertNotNull(cargoAtualizado);
         Assertions.assertEquals(cargo.getDescricao(), cargoAtualizado.getDescricao());
