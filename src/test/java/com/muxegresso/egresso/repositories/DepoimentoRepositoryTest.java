@@ -40,6 +40,7 @@ public class DepoimentoRepositoryTest {
         Assertions.assertEquals(depoimento.getTexto(), salvoDepoimento.getTexto());
         Assertions.assertEquals(depoimento.getData(), salvoDepoimento.getData());
 
+
     }
 
     @Test
@@ -84,6 +85,8 @@ public class DepoimentoRepositoryTest {
 
         Assertions.assertNotNull(atualizadoDepoimento);
         Assertions.assertEquals("Atualizado", atualizadoDepoimento.getTexto());
+        Assertions.assertEquals(salvoDepoimento.getData(), atualizadoDepoimento.getData());
+
     }
 
 }

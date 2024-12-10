@@ -67,6 +67,8 @@ public class CursoRepositoryTest {
         // Validações
         Assertions.assertNotNull(cursoAtualizado, "O curso atualizado não deveria ser nulo.");
         Assertions.assertEquals("novoNome", cursoAtualizado.getNome(), "O nome do curso não foi atualizado corretamente.");
+        Assertions.assertEquals(cursoAtualizado.getNivel(), salvoCurso.getNivel());
+
     }
 
 

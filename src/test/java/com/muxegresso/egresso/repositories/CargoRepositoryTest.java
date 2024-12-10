@@ -82,6 +82,9 @@ public class CargoRepositoryTest {
 
         Assertions.assertNotNull(cargoAtualizado);
         Assertions.assertEquals(cargo.getDescricao(), cargoAtualizado.getDescricao());
+        Assertions.assertEquals(cargoAtualizado.getLocal(), salvoCargo.getLocal());
+        Assertions.assertEquals(cargoAtualizado.getAno_fim(), salvoCargo.getAno_fim());
+        Assertions.assertEquals(cargoAtualizado.getAno_inicio(), salvoCargo.getAno_inicio());
 
     }
 }
