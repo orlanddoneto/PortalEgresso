@@ -35,7 +35,7 @@ public class Egresso {
     @Size(min = 5, max = 50)
     private String senha;
 
-    @Column(nullable = false, length = 255)
+    @Column(unique = true, nullable = false, length = 255)
     @Email
     private String email;
 
