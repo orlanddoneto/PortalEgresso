@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -15,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "tb_cargo")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EqualsAndHashCode(of = "id")
-public class Cargo {
+public class Cargo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -19,7 +20,7 @@ import java.util.Date;
 @Table(name = "tb_depoimento")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EqualsAndHashCode(of = "id")
-public class Depoimento {
+public class Depoimento implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
