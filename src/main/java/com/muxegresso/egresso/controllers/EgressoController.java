@@ -5,7 +5,7 @@ import com.muxegresso.egresso.domain.ApiResponse;
 import com.muxegresso.egresso.domain.Egresso;
 import com.muxegresso.egresso.domain.dtos.RequestEgressoDto;
 import com.muxegresso.egresso.domain.enums.UserStatus;
-import com.muxegresso.egresso.services.EgressoService;
+import com.muxegresso.egresso.services.impl.EgressoServiceImpl;
 import com.muxegresso.egresso.specifications.SpecificationTemplate;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -29,7 +29,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class EgressoController {
 
     @Autowired
-    private EgressoService egressoService;
+    private EgressoServiceImpl egressoServiceImpl;
 
     private ModelMapper modelMappper = new ModelMapper();
 
@@ -38,7 +38,7 @@ public class EgressoController {
             SpecificationTemplate.EgressoSpec spec,
             @PageableDefault(size = 10, sort = "id") Pageable pageable){
 
-        var egressolist = egressoService.findAll(spec, pageable);
+        var egressolist = egressoServiceImpl.findAll(spec, pageable);
 
         if (!egressolist.isEmpty()) {
             for (Egresso egresso: egressolist.toList()){
@@ -51,7 +51,7 @@ public class EgressoController {
 
     @GetMapping("{cpf}")
     public ResponseEntity<Object> getEgressoByCpf(@PathVariable(value = "cpf") String cpf){
-        var egresso = egressoService.getEgressoByCpf(cpf);
+        var egresso = egressoServiceImpl.getEgressoByCpf(cpf);
 
         if (!egresso.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cpf not found. ");
@@ -64,33 +64,27 @@ public class EgressoController {
     public ResponseEntity<Object> registrerEgresso(@RequestBody
                                                    @JsonView(RequestEgressoDto.EgressoView.RegistrationPost.class) RequestEgressoDto requestEgressoDto){
 
-        if (!egressoService.existsByCpf(requestEgressoDto.getCpf())){
+        if (!egressoServiceImpl.existsByCpf(requestEgressoDto.getCpf())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse(false, "CPF já cadastrado !!!"));
         }
-        if (!egressoService.existsByEmail(requestEgressoDto.getEmail())){
+        if (!egressoServiceImpl.existsByEmail(requestEgressoDto.getEmail())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse(false, "Email fornecido já cadastrado !!!"));
         }
 
-        var egresso = new Egresso();
-        BeanUtils.copyProperties(requestEgressoDto, egresso);
-        egresso.setUserStatus(UserStatus.ACTIVE);
-        egresso.setCreatedAt(LocalDateTime.now(ZoneId.of("UTC")));
-        egresso.setUpdatedAt(LocalDateTime.now(ZoneId.of("UTC")));
+        var response = egressoServiceImpl.save(requestEgressoDto);
 
-        egressoService.save(egresso);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(egresso);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Transactional
     @PutMapping
     public ResponseEntity<Object> updateEgresso(@RequestBody @JsonView(RequestEgressoDto.EgressoView.EgressoUpdate.class) RequestEgressoDto requestEgressoDto){
 
-        var egressoOptional = egressoService.findById(requestEgressoDto.getId());
+        var egressoOptional = egressoServiceImpl.findById(requestEgressoDto.getId());
         if (egressoOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(false, "Egresso não encontrado"));
         }
-        egressoService.updateEgresso(egressoOptional.get(), requestEgressoDto);
+        egressoServiceImpl.updateEgresso(egressoOptional.get(), requestEgressoDto);
 
         return ResponseEntity.ok().body(new ApiResponse(true, "id: "+requestEgressoDto.getId()+"- Egresso Atualizado !"));
     }
@@ -99,7 +93,7 @@ public class EgressoController {
     @PatchMapping("/updatepass")
     public ResponseEntity<ApiResponse> updatePassword(@RequestBody @JsonView(RequestEgressoDto.EgressoView.PasswordUpdate.class) RequestEgressoDto requestEgressoDto){
 
-        if (!egressoService.existsById(requestEgressoDto.getId())){
+        if (!egressoServiceImpl.existsById(requestEgressoDto.getId())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse(false, "ID não encontrado"));
         }
 
