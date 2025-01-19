@@ -1,5 +1,6 @@
 package com.muxegresso.egresso.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -33,6 +35,13 @@ public class Depoimento {
     @Column(nullable = false, length = 255)
     private Date data;
 
+    @JsonIgnore
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime createdAt;
 
+    @JsonIgnore
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
 
 }

@@ -9,37 +9,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-public class CursoService {
-    @Autowired
-    CursoRepository cursoRepository;
 
-    @Transactional
-    public Curso save(@Valid Curso egresso){
-        return cursoRepository.save(egresso);
-    }
+public interface CursoService{
 
-    public Curso findById( Integer id){
-        Curso curso = cursoRepository.findById(id).orElseThrow(()->new RuntimeException("ID não presente no sistema."));
-        return curso;
-    }
+    Curso save(@Valid Curso egresso);
 
-    public Page<Curso> findAll(Pageable pageable){
-        return cursoRepository.findAll(pageable);
-    }
+    Curso findById( Integer id);
 
-    @Transactional
-    public Curso delete(Integer id){
-        Curso curso = this.findById(id);
-        cursoRepository.delete(curso);
-        return curso;
-    }
+    Page<Curso> findAll(Pageable pageable);
 
-    @Transactional
-    public String update(@Valid Curso curso){
-        Curso cursoObj = this.findById(curso.getId());
-        cursoRepository.save(cursoObj);
-        return "Curso atualizado com sucesso";
+    Curso delete(Integer id);
 
-    }
+    String update(@Valid Curso curso);
 }
