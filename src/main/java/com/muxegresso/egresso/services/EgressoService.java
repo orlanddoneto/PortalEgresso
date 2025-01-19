@@ -24,7 +24,7 @@ public interface EgressoService {
 
     boolean existsByEmail(@NotBlank String email);
 
-    ApiResponse save(@Valid RequestEgressoDto egresso);
+    Egresso save(@Valid RequestEgressoDto egresso);
 
     Optional<Egresso> findById(Integer id);
 
@@ -33,4 +33,6 @@ public interface EgressoService {
     Page<Egresso> findAll(Specification<Egresso> spec, Pageable pageable);
 
     boolean existsById(Integer id);
+
+    public String efetuarLogin(String email, String senha);
 }
