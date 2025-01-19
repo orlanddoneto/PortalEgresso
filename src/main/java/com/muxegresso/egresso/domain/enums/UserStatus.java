@@ -1,2 +1,6 @@
-package com.muxegresso.egresso.domain.enums;public class UserStatus {
+package com.muxegresso.egresso.domain.enums;
+
+public enum UserStatus {
+    ACTIVE,
+    BLOCKED;
 }
