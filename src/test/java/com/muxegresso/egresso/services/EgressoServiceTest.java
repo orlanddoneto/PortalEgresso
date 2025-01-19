@@ -21,10 +21,41 @@ public class EgressoServiceTest {
 
     @Test
     @DisplayName("Verifica o salvamento de um egresso")
-    public void deveTestarEfetuarLogin(){
+    public void deveTestarSalvarEgresso(){
+        EasyRandom easyRandom = new EasyRandom();
+        Egresso egresso = easyRandom.nextObject(Egresso.class);
+        egresso.setId(null);
+        Egresso salvoEgresso = egressoService.save(egresso);
 
+        Assertions.assertNotNull(salvoEgresso);
+        Assertions.assertEquals(egresso.getNome(), salvoEgresso.getNome());
+        Assertions.assertEquals(egresso.getCpf(), salvoEgresso.getCpf());
+        Assertions.assertEquals(egresso.getEmail(), salvoEgresso.getEmail());
+        Assertions.assertEquals(egresso.getResumo(), salvoEgresso.getResumo());
+        Assertions.assertEquals(egresso.getSenha(),salvoEgresso.getSenha());
+        Assertions.assertEquals(egresso.getUrl_foto(), salvoEgresso.getUrl_foto());
+    }
+
+    @Test
+    @DisplayName("Verifica a busca por ID de um egresso")
+    public void deveTestarFindByID(){
+        EasyRandom easyRandom = new EasyRandom();
+        Egresso egresso = easyRandom.nextObject(Egresso.class);
+        egresso.setId(null);
+        Egresso salvoEgresso = egressoService.save(egresso);
+
+        Integer id = salvoEgresso.getId();
+        Egresso searchEgresso = egressoService.findById(id);
+        Assertions.assertEquals(salvoEgresso,searchEgresso);
 
     }
+
+    @Test
+    @DisplayName("Verifica a busca todos os egressos")
+    public void deveTestarFindAll(){
+
+    }
+
 
 
 }
