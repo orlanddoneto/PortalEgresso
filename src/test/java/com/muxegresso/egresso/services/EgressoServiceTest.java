@@ -3,6 +3,7 @@ package com.muxegresso.egresso.services;
 
 import com.muxegresso.egresso.domain.Egresso;
 import com.muxegresso.egresso.repositories.EgressoRepository;
+import com.muxegresso.egresso.services.impl.EgressoServiceImpl;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +18,7 @@ public class EgressoServiceTest {
     EgressoRepository egressoRepository;
 
     @Autowired
-    EgressoService egressoService;
+    EgressoServiceImpl egressoServiceImpl;
 
     @Test
     @DisplayName("Verifica o salvamento de um egresso")
@@ -25,7 +26,7 @@ public class EgressoServiceTest {
         EasyRandom easyRandom = new EasyRandom();
         Egresso egresso = easyRandom.nextObject(Egresso.class);
         egresso.setId(null);
-        Egresso salvoEgresso = egressoService.save(egresso);
+        Egresso salvoEgresso = egressoServiceImpl.save(egresso);
 
         Assertions.assertNotNull(salvoEgresso);
         Assertions.assertEquals(egresso.getNome(), salvoEgresso.getNome());
@@ -42,10 +43,10 @@ public class EgressoServiceTest {
         EasyRandom easyRandom = new EasyRandom();
         Egresso egresso = easyRandom.nextObject(Egresso.class);
         egresso.setId(null);
-        Egresso salvoEgresso = egressoService.save(egresso);
+        Egresso salvoEgresso = egressoServiceImpl.save(egresso);
 
         Integer id = salvoEgresso.getId();
-        Egresso searchEgresso = egressoService.findById(id);
+        Egresso searchEgresso = egressoServiceImpl.findById(id);
         Assertions.assertEquals(salvoEgresso,searchEgresso);
 
     }
