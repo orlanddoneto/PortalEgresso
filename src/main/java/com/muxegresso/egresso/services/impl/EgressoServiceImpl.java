@@ -56,14 +56,14 @@ import java.util.Optional;
         }
 
         @Override
-        public ApiResponse save(RequestEgressoDto egresso) {
+        public Egresso save(RequestEgressoDto egresso) {
             var egressoEntity = modelMapper.map(egresso, Egresso.class);
             egressoEntity.setUserStatus(UserStatus.ACTIVE);
             egressoEntity.setCreatedAt(LocalDateTime.now(ZoneId.of("UTC")));
             egressoEntity.setUpdatedAt(LocalDateTime.now(ZoneId.of("UTC")));
             egressoRepository.save(egressoEntity);
 
-            return new ApiResponse(true, egressoEntity.toString());
+            return egressoEntity;
         }
 
         @Override

@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface CoordenadorRepository extends JpaRepository<Coordenador,Integer> {
     Optional<Coordenador> FindByEmail(String email);
 
+    Optional<Coordenador> findByLogin(String login);
 }

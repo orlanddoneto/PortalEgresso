@@ -4,12 +4,10 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.muxegresso.egresso.domain.ApiResponse;
 import com.muxegresso.egresso.domain.Egresso;
 import com.muxegresso.egresso.domain.dtos.RequestEgressoDto;
-import com.muxegresso.egresso.domain.enums.UserStatus;
 import com.muxegresso.egresso.services.impl.EgressoServiceImpl;
 import com.muxegresso.egresso.specifications.SpecificationTemplate;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +15,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;

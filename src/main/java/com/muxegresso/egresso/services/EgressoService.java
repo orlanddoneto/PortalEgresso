@@ -24,7 +24,7 @@ public interface EgressoService {
 
     boolean existsByEmail(@NotBlank String email);
 
-    ApiResponse save(@Valid RequestEgressoDto egresso);
+    Egresso save(@Valid RequestEgressoDto egresso);
 
     Optional<Egresso> findById(Integer id);
 

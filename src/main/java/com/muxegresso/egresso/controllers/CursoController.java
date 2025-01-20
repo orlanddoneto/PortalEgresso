@@ -20,7 +20,7 @@ public class CursoController {
 
     @Autowired
     private CursoService cursoService;
-    
+
     @GetMapping
     public ResponseEntity<Page<Curso>> findAll(Pageable pageable){
         Page<Curso> list = cursoService.findAll(pageable);
