@@ -3,7 +3,10 @@ package com.muxegresso.egresso.services.impl;
 import com.muxegresso.egresso.domain.*;
 import com.muxegresso.egresso.repositories.*;
 import com.muxegresso.egresso.services.CoordenadorService;
+import com.muxegresso.egresso.services.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,10 +30,10 @@ public class CoordenadorServiceImpl implements CoordenadorService {
     @Autowired
     DepoimentoRepository depoimentoRepository;
 
-    public String efetuarLogin(String email, String senha){
+    public boolean efetuarLogin(String email, String senha){
         Coordenador coordenador = coordenadorRepository.FindByEmail(email).orElseThrow(() -> new RuntimeException("Email não existente na base de dados."));
-        if (coordenador.getSenha().equals(senha)) return "Login efetuado com sucesso.";
-        return "Senha incorreta";
+        if (coordenador.getSenha().equals(senha)) return true;
+        return false;
     }
 
     @Transactional
@@ -41,6 +44,32 @@ public class CoordenadorServiceImpl implements CoordenadorService {
     public Coordenador findById( Integer id){
         Coordenador coordenador = coordenadorRepository.findById(id).orElseThrow(()->new RuntimeException("ID não presente no sistema."));
         return coordenador;
+    }
+
+    @Override
+    public Depoimento lincarDepoimentoEgresso(@NotNull Egresso egresso, @NotNull Depoimento depoimento) {
+        depoimento.setEgresso(egresso);
+        return depoimentoRepository.save(depoimento);
+    }
+
+    @Override
+    public Curso addCurso(@NotNull String login, @NotBlank String nome, @NotBlank String nivel) {
+        Coordenador coordenador = coordenadorRepository.findByLogin(login).orElseThrow(()-> new ResourceNotFoundException(login));
+
+        Curso curso = new Curso();
+
+        curso.setCoordenador(coordenador);
+        curso.setNome(nome);
+        curso.setNivel(nivel);
+
+        return cursoRepository.save(curso);
+    }
+
+    @Override
+    @Transactional
+    public Cargo addCargo(@NotNull Egresso egresso,@NotNull Cargo cargo) {
+        cargo.setEgresso(egresso);
+        return cargoRepository.save(cargo);
     }
 
     public Page<Coordenador> findAll(Pageable pageable){

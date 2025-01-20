@@ -61,7 +61,9 @@ import java.util.Optional;
             egressoEntity.setUserStatus(UserStatus.ACTIVE);
             egressoEntity.setCreatedAt(LocalDateTime.now(ZoneId.of("UTC")));
             egressoEntity.setUpdatedAt(LocalDateTime.now(ZoneId.of("UTC")));
+
             return egressoRepository.save(egressoEntity);
+
         }
 
         @Override

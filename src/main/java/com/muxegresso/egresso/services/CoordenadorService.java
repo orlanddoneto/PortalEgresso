@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface CoordenadorService {
     
-    String efetuarLogin(String email, String senha);
+    boolean efetuarLogin(String email, String senha);
 
     Coordenador save(@Valid Coordenador coordenador);
 
@@ -27,4 +27,10 @@ public interface CoordenadorService {
     void AdicionarDepoimento(@Valid Egresso egresso, @Valid Depoimento depoimento);
 
     Coordenador findById(Integer id);
+
+    Depoimento lincarDepoimentoEgresso(Egresso egresso, Depoimento depoimento);
+
+    Curso addCurso(String login, String nomeTeste, String nivelTeste);
+
+    Cargo addCargo(Egresso egresso, Cargo cargo);
 }
