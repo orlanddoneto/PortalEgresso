@@ -43,7 +43,6 @@ public class EgressoServiceTest {
     @InjectMocks
     private EgressoServiceImpl egressoServiceImpl; // Serviço com o mock injetado
 
-
     ModelMapper modelMapper = new ModelMapper();
 
     @PersistenceContext
@@ -70,11 +69,8 @@ public class EgressoServiceTest {
     @Test
     @DisplayName("Verifica a busca de todos os egressos")
     public void deveTestarFindAllEgresso() {
-
-
     }
 
-    /*
     @Test
     @DisplayName("Verifica a busca por ID de um egresso")
     public void deveTestarFindByID(){
@@ -208,7 +204,6 @@ public class EgressoServiceTest {
 
         Egresso salvo = egressoServiceImpl.save(modelMapper.map(egresso, RequestEgressoDto.class));
 
-        //Verificação
         Assertions.assertNotNull(salvo);
         Assertions.assertEquals(egresso.getNome(), salvo.getNome());
         Assertions.assertEquals(egresso.getEmail(), salvo.getEmail());
@@ -229,7 +224,6 @@ public class EgressoServiceTest {
 
         Egresso atualizado = egressoServiceImpl.update(egresso);
 
-        //Verificação
         Assertions.assertNotNull(atualizado);
         Assertions.assertEquals(egresso.getNome(), atualizado.getNome());
         Assertions.assertEquals(egresso.getEmail(), atualizado.getEmail());
@@ -247,8 +241,6 @@ public class EgressoServiceTest {
         Assertions.assertEquals(egresso, encontrado);
     }
 
-
-<<<<<<< HEAD
     @Test
     @Transactional
     public void deveBuscarPorCargoExistente() {
@@ -318,10 +310,5 @@ public class EgressoServiceTest {
         Exception exception = Assertions.assertThrows(ResourceNotFoundException.class, () -> egressoServiceImpl.findByCargo(cargo), "Recurso não Encontrado!");
         Assertions.assertEquals("Recurso não Encontrado!", exception.getMessage());
     }
-=======
-    */
 
-
-
->>>>>>> 3af1fcb159c93579c7f5335730431f1bb084e35f
 }
