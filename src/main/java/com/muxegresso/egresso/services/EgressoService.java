@@ -33,4 +33,6 @@ public interface EgressoService {
     Page<Egresso> findAll(Specification<Egresso> spec, Pageable pageable);
 
     boolean existsById(Integer id);
+
+    public String efetuarLogin(String email, String senha);
 }

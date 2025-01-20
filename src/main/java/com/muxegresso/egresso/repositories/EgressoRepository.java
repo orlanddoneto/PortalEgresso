@@ -14,5 +14,7 @@ public interface EgressoRepository extends JpaRepository<Egresso, Integer>, JpaS
 
     boolean existsByEmail(String email);
 
+    Optional<Egresso> findByEmail(String email);
+
     boolean existsByCpf(String cpf);
 }

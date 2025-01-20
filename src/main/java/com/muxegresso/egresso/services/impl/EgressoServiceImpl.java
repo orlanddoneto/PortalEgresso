@@ -27,7 +27,7 @@ import java.util.Optional;
         @Autowired
         private EgressoRepository egressoRepository;
 
-        private final ModelMapper modelMapper =new ModelMapper();
+        private final ModelMapper modelMapper = new ModelMapper();
 
         @Override
         public Page<RequestEgressoDto> getAllEgresso(Pageable pageable) {
@@ -61,9 +61,9 @@ import java.util.Optional;
             egressoEntity.setUserStatus(UserStatus.ACTIVE);
             egressoEntity.setCreatedAt(LocalDateTime.now(ZoneId.of("UTC")));
             egressoEntity.setUpdatedAt(LocalDateTime.now(ZoneId.of("UTC")));
-            egressoRepository.save(egressoEntity);
 
-            return egressoEntity;
+            return egressoRepository.save(egressoEntity);
+
         }
 
         @Override
@@ -89,5 +89,12 @@ import java.util.Optional;
         @Override
         public boolean existsById(Integer id) {
             return egressoRepository.existsById(id);
+        }
+
+        @Override
+        public String efetuarLogin(String email, String senha){
+            Egresso egresso = egressoRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Email não existente na base de dados."));
+            if (egresso.getSenha().equals(senha)) return "Login efetuado com sucesso.";
+            return "Senha incorreta";
         }
 }

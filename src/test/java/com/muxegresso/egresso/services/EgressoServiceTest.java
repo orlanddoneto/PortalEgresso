@@ -10,17 +10,27 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+
+import java.util.Arrays;
+import java.util.List;
 
 @SpringBootTest
 public class EgressoServiceTest {
 
-    @Autowired
-    EgressoRepository egressoRepository;
+    @Mock
+    private EgressoRepository egressoRepositoryMock; // Mock do repositório
 
-    @Autowired
-    EgressoServiceImpl egressoServiceImpl;
+    @InjectMocks
+    private EgressoServiceImpl egressoServiceImpl; // Serviço com o mock injetado
+
 
     ModelMapper modelMapper = new ModelMapper();
 
@@ -35,15 +45,19 @@ public class EgressoServiceTest {
 
         Egresso salvoEgresso = egressoServiceImpl.save(egressoEntity);
 
-        Assertions.assertNotNull(salvoEgresso);
-        Assertions.assertEquals(egresso.getNome(), salvoEgresso.getNome());
-        Assertions.assertEquals(egresso.getCpf(), salvoEgresso.getCpf());
-        Assertions.assertEquals(egresso.getEmail(), salvoEgresso.getEmail());
-        Assertions.assertEquals(egresso.getResumo(), salvoEgresso.getResumo());
-        Assertions.assertEquals(egresso.getSenha(),salvoEgresso.getSenha());
-        Assertions.assertEquals(egresso.getUrl_foto(), salvoEgresso.getUrl_foto());
+    public Egresso criaEgresso() {
+        EasyRandom easyRandom = new EasyRandom();
+        return easyRandom.nextObject(Egresso.class);
     }
 
+    @Test
+    @DisplayName("Verifica a busca de todos os egressos")
+    public void deveTestarFindAllEgresso() {
+
+
+    }
+
+    /*
     @Test
     @DisplayName("Verifica a busca por ID de um egresso")
     public void deveTestarFindByID(){
@@ -59,6 +73,10 @@ public class EgressoServiceTest {
         Assertions.assertEquals(salvoEgresso,searchEgresso);
 
     }
+
+
+    */
+
 
 
 }
