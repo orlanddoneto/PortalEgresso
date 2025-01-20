@@ -23,5 +23,7 @@ public interface EgressoRepository extends JpaRepository<Egresso, Integer>, JpaS
 
     Egresso findByCargo(Cargo cargo);
 
+    Optional<Egresso> findByEmail(String email);
+
     List<Egresso> findAllByCargo();
 }

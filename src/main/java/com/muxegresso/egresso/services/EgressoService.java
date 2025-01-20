@@ -47,7 +47,7 @@ public interface EgressoService {
 
     List<Egresso> findALLByCargo(Cargo cargo);
 
-    boolean efetuarLogin(String mail, String senha1);
+    boolean efetuarLogin(String mail, String senha1) throws Exception;
 
     Egresso update(Egresso egresso);
 }

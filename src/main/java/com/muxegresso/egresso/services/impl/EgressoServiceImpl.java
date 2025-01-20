@@ -133,12 +133,15 @@ import java.util.Optional;
         }
 
         @Override
-        public boolean efetuarLogin(String mail, String senha1) {
-            return false;
-        }
+        public boolean efetuarLogin(String email, String senha) throws Exception {
+                Optional<Egresso> egresso = egressoRepository.findByEmail(email);
+                if ((!egresso.isPresent()) || (!egresso.get().getSenha().equals(senha)))
+                    throw new Exception("Erro de autenticação");
+                return true;
+            }
 
         @Override
-        public Egresso update(@NotNull Egresso egresso) {
+        public Egresso update(Egresso egresso) {
             return egressoRepository.save(egresso);
         }
     }
