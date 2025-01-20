@@ -34,12 +34,16 @@ import java.util.Optional;
         @Autowired
         private EgressoRepository egressoRepository;
 
+<<<<<<< HEAD
         @Autowired
         private CursoRepository cursoRepository;
 
         private final ModelMapper modelMapper =new ModelMapper();
         @Autowired
         private CargoRepository cargoRepository;
+=======
+        private final ModelMapper modelMapper = new ModelMapper();
+>>>>>>> 3af1fcb159c93579c7f5335730431f1bb084e35f
 
         @Override
         public Page<RequestEgressoDto> getAllEgresso(Pageable pageable) {
@@ -73,9 +77,9 @@ import java.util.Optional;
             egressoEntity.setUserStatus(UserStatus.ACTIVE);
             egressoEntity.setCreatedAt(LocalDateTime.now(ZoneId.of("UTC")));
             egressoEntity.setUpdatedAt(LocalDateTime.now(ZoneId.of("UTC")));
-            egressoRepository.save(egressoEntity);
 
-            return egressoEntity;
+            return egressoRepository.save(egressoEntity);
+
         }
 
         @Override
@@ -104,6 +108,7 @@ import java.util.Optional;
         }
 
         @Override
+<<<<<<< HEAD
         public Egresso findByCurso(Curso curso) {
             cursoRepository.findById(curso.getId()).orElseThrow(()-> new ResourceNotFoundException(curso.getId()));
 
@@ -145,3 +150,11 @@ import java.util.Optional;
             return egressoRepository.save(egresso);
         }
     }
+=======
+        public String efetuarLogin(String email, String senha){
+            Egresso egresso = egressoRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Email não existente na base de dados."));
+            if (egresso.getSenha().equals(senha)) return "Login efetuado com sucesso.";
+            return "Senha incorreta";
+        }
+}
+>>>>>>> 3af1fcb159c93579c7f5335730431f1bb084e35f

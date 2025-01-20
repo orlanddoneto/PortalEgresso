@@ -37,6 +37,7 @@ public interface EgressoService {
 
     boolean existsById(Integer id);
 
+<<<<<<< HEAD
     Egresso findByCurso(Curso curso);
 
     Egresso findByCargo(Cargo cargo);
@@ -50,4 +51,7 @@ public interface EgressoService {
     boolean efetuarLogin(String mail, String senha1) throws Exception;
 
     Egresso update(Egresso egresso);
+=======
+    public String efetuarLogin(String email, String senha);
+>>>>>>> 3af1fcb159c93579c7f5335730431f1bb084e35f
 }

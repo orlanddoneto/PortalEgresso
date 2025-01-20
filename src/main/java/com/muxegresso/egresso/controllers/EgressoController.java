@@ -59,10 +59,10 @@ public class EgressoController {
     public ResponseEntity<Object> registrerEgresso(@RequestBody
                                                    @JsonView(RequestEgressoDto.EgressoView.RegistrationPost.class) RequestEgressoDto requestEgressoDto){
 
-        if (!egressoServiceImpl.existsByCpf(requestEgressoDto.getCpf())){
+        if (egressoServiceImpl.existsByCpf(requestEgressoDto.getCpf())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse(false, "CPF já cadastrado !!!"));
         }
-        if (!egressoServiceImpl.existsByEmail(requestEgressoDto.getEmail())){
+        if (egressoServiceImpl.existsByEmail(requestEgressoDto.getEmail())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse(false, "Email fornecido já cadastrado !!!"));
         }
 
