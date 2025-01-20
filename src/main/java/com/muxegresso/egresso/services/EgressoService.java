@@ -1,6 +1,8 @@
 package com.muxegresso.egresso.services;
 
 import com.muxegresso.egresso.domain.ApiResponse;
+import com.muxegresso.egresso.domain.Cargo;
+import com.muxegresso.egresso.domain.Curso;
 import com.muxegresso.egresso.domain.Egresso;
 import com.muxegresso.egresso.domain.dtos.RequestEgressoDto;
 import jakarta.validation.Valid;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface EgressoService {
@@ -34,5 +37,21 @@ public interface EgressoService {
 
     boolean existsById(Integer id);
 
+<<<<<<< HEAD
+    Egresso findByCurso(Curso curso);
+
+    Egresso findByCargo(Cargo cargo);
+
+    List<Egresso> findAllEgresso();
+
+    void delete(Integer id);
+
+    List<Egresso> findALLByCargo(Cargo cargo);
+
+    boolean efetuarLogin(String mail, String senha1) throws Exception;
+
+    Egresso update(Egresso egresso);
+=======
     public String efetuarLogin(String email, String senha);
+>>>>>>> 3af1fcb159c93579c7f5335730431f1bb084e35f
 }
