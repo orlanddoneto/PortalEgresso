@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -28,7 +27,7 @@ public class Coordenador implements Serializable {
     private String nome;
 
     @Column(nullable = false, length = 255)
-    private String login;
+    private String email;
 
     @Column(nullable = false, length = 255)
     private String senha;

@@ -17,7 +17,7 @@ import java.util.Optional;
 
 public interface EgressoService {
 
-    Page<RequestEgressoDto> getAllEgresso(Pageable pageable);
+    List<Egresso> findAllEgresso();
 
     Optional<Egresso> getEgressoByCpf(@NotBlank String cpf);
 
@@ -37,21 +37,12 @@ public interface EgressoService {
 
     boolean existsById(Integer id);
 
-<<<<<<< HEAD
-    Egresso findByCurso(Curso curso);
-
-    Egresso findByCargo(Cargo cargo);
-
-    List<Egresso> findAllEgresso();
-
     void delete(Integer id);
 
-    List<Egresso> findALLByCargo(Cargo cargo);
+    /*
+    List<Egresso> findAllByCurso(Integer idCurso);
 
-    boolean efetuarLogin(String mail, String senha1) throws Exception;
-
-    Egresso update(Egresso egresso);
-=======
+    List<Egresso> findAllByCargo(Integer idCargo);
+    */
     public String efetuarLogin(String email, String senha);
->>>>>>> 3af1fcb159c93579c7f5335730431f1bb084e35f
 }

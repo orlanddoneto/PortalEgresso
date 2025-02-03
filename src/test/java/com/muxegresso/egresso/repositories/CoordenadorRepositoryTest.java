@@ -1,7 +1,6 @@
 package com.muxegresso.egresso.repositories;
 
 import com.muxegresso.egresso.domain.Coordenador;
-import com.muxegresso.egresso.domain.Curso_Egresso;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -27,7 +26,7 @@ public class CoordenadorRepositoryTest {
 
         Assertions.assertNotNull(salvoCoordenador);
         Assertions.assertEquals(salvoCoordenador.getTipo(), coordenador.getTipo());
-        Assertions.assertEquals(salvoCoordenador.getLogin(), coordenador.getLogin());
+        Assertions.assertEquals(salvoCoordenador.getEmail(), coordenador.getEmail());
         Assertions.assertEquals(salvoCoordenador.getSenha(), coordenador.getSenha());
     }
 
@@ -61,7 +60,7 @@ public class CoordenadorRepositoryTest {
         Assertions.assertNotNull(atualizadoCoordenador);
         Assertions.assertEquals("tipoTeste",atualizadoCoordenador.getTipo());
         Assertions.assertEquals(salvoCoordenador.getSenha(), atualizadoCoordenador.getSenha());
-        Assertions.assertEquals(salvoCoordenador.getLogin(),atualizadoCoordenador.getLogin());
+        Assertions.assertEquals(salvoCoordenador.getEmail(),atualizadoCoordenador.getEmail());
 
     }
 }

@@ -2,9 +2,7 @@ package com.muxegresso.egresso.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.muxegresso.egresso.domain.Coordenador;
-import com.muxegresso.egresso.domain.Curso;
 import com.muxegresso.egresso.services.impl.CoordenadorServiceImpl;
-import com.muxegresso.egresso.services.impl.CursoServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,13 +40,13 @@ public class CoordenadorControllerTest {
         coordenador1.setId(1);
         coordenador1.setTipo("X");
         coordenador1.setNome("nomeTeste");
-        coordenador1.setLogin("loginTeste");
+        coordenador1.setEmail("loginTeste");
 
         Coordenador coordenador2 = new Coordenador();
         coordenador2.setId(2);
         coordenador2.setTipo("X");
         coordenador2.setNome("nomeTeste");
-        coordenador2.setLogin("loginTeste");
+        coordenador2.setEmail("loginTeste");
 
 
         Page<Coordenador> coordenadorPage = new PageImpl<>(List.of(coordenador1, coordenador2));
@@ -77,7 +75,7 @@ public class CoordenadorControllerTest {
         coordenador1.setId(1);
         coordenador1.setTipo("X");
         coordenador1.setNome("nomeTeste");
-        coordenador1.setLogin("loginTeste");
+        coordenador1.setEmail("loginTeste");
 
 
         Mockito.when(coordenadorService.findById(coordenador1.getId()))
@@ -101,7 +99,7 @@ public class CoordenadorControllerTest {
         coordenador1.setId(1);
         coordenador1.setTipo("X");
         coordenador1.setNome("nomeTeste");
-        coordenador1.setLogin("loginTeste");
+        coordenador1.setEmail("loginTeste");
         Mockito.when(coordenadorService.save(Mockito.any(Coordenador.class))).thenReturn(coordenador1);
 
         String coordenadorJson = new ObjectMapper().writeValueAsString(coordenador1);
@@ -141,13 +139,13 @@ public class CoordenadorControllerTest {
         coordenador1.setId(1);
         coordenador1.setTipo("X");
         coordenador1.setNome("nomeTeste");
-        coordenador1.setLogin("loginTeste");
+        coordenador1.setEmail("loginTeste");
 
         Coordenador coordenador2 = new Coordenador();
         coordenador2.setId(1);
         coordenador2.setTipo("X");
         coordenador2.setNome("nomeTeeeeeste");
-        coordenador2.setLogin("loginTeeeste");
+        coordenador2.setEmail("loginTeeeste");
 
         Mockito.when(coordenadorService.update(Mockito.any(Coordenador.class))).thenReturn("Coordenador atualizado com sucesso");
 

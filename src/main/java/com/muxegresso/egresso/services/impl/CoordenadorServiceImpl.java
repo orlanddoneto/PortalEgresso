@@ -31,7 +31,7 @@ public class CoordenadorServiceImpl implements CoordenadorService {
     DepoimentoRepository depoimentoRepository;
 
     public boolean efetuarLogin(String email, String senha){
-        Coordenador coordenador = coordenadorRepository.FindByEmail(email).orElseThrow(() -> new RuntimeException("Email não existente na base de dados."));
+        Coordenador coordenador = coordenadorRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Email não existente na base de dados."));
         if (coordenador.getSenha().equals(senha)) return true;
         return false;
     }
@@ -53,8 +53,8 @@ public class CoordenadorServiceImpl implements CoordenadorService {
     }
 
     @Override
-    public Curso addCurso(@NotNull String login, @NotBlank String nome, @NotBlank String nivel) {
-        Coordenador coordenador = coordenadorRepository.findByLogin(login).orElseThrow(()-> new ResourceNotFoundException(login));
+    public Curso addCurso(@NotNull String email, @NotBlank String nome, @NotBlank String nivel) {
+        Coordenador coordenador = coordenadorRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException(email));
 
         Curso curso = new Curso();
 

@@ -34,20 +34,13 @@ import java.util.Optional;
         @Autowired
         private EgressoRepository egressoRepository;
 
-<<<<<<< HEAD
-        @Autowired
-        private CursoRepository cursoRepository;
 
-        private final ModelMapper modelMapper =new ModelMapper();
-        @Autowired
-        private CargoRepository cargoRepository;
-=======
         private final ModelMapper modelMapper = new ModelMapper();
->>>>>>> 3af1fcb159c93579c7f5335730431f1bb084e35f
+
 
         @Override
-        public Page<RequestEgressoDto> getAllEgresso(Pageable pageable) {
-            return egressoRepository.findAll(pageable).map(egresso -> modelMapper.map(egresso, RequestEgressoDto.class));
+        public List<Egresso> findAllEgresso() {
+            return egressoRepository.findAll();
         }
 
         @Override
@@ -89,13 +82,19 @@ import java.util.Optional;
 
         @Override
         public void updateEgresso(Egresso egresso, RequestEgressoDto requestEgressoDto) {
-            BeanUtils.copyProperties(egresso, requestEgressoDto);
+
+            BeanUtils.copyProperties(requestEgressoDto, egresso);
+
+            Optional<Egresso> existente = egressoRepository.findByEmail(egresso.getEmail());
+            if (existente.isPresent() && !existente.get().getId().equals(egresso.getId())) {
+                throw new RuntimeException("O email já existe, tente outro por favor");
+            }
 
             egresso.setUpdatedAt(LocalDateTime.now(ZoneId.of("UTC")));
 
             egressoRepository.save(egresso);
-
         }
+
 
         @Override
         public Page<Egresso> findAll(Specification<Egresso> spec, Pageable pageable) {
@@ -108,53 +107,28 @@ import java.util.Optional;
         }
 
         @Override
-<<<<<<< HEAD
-        public Egresso findByCurso(Curso curso) {
-            cursoRepository.findById(curso.getId()).orElseThrow(()-> new ResourceNotFoundException(curso.getId()));
-
-            return egressoRepository.findByCurso(curso).get();
-        }
-
-        @Override
-        public Egresso findByCargo(Cargo cargo) {
-            cargoRepository.findById(cargo.getId());
-            return egressoRepository.findByCargo(cargo);
-        }
-
-        @Override
-        public List<Egresso> findAllEgresso() {
-            return egressoRepository.findAll();
-        }
-
-        @Override
         public void delete(Integer id) {
             var egresso = egressoRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
             egressoRepository.delete(egresso);
         }
 
         @Override
-        public List<Egresso> findALLByCargo(Cargo cargo) {
-            return egressoRepository.findAllByCargo();
-        }
-
-        @Override
-        public boolean efetuarLogin(String email, String senha) throws Exception {
-                Optional<Egresso> egresso = egressoRepository.findByEmail(email);
-                if ((!egresso.isPresent()) || (!egresso.get().getSenha().equals(senha)))
-                    throw new Exception("Erro de autenticação");
-                return true;
-            }
-
-        @Override
-        public Egresso update(Egresso egresso) {
-            return egressoRepository.save(egresso);
-        }
-    }
-=======
         public String efetuarLogin(String email, String senha){
             Egresso egresso = egressoRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Email não existente na base de dados."));
             if (egresso.getSenha().equals(senha)) return "Login efetuado com sucesso.";
             return "Senha incorreta";
         }
+
+        /*
+        @Override
+        public List<Egresso> findAllByCargo(Integer idCargo) {
+            return egressoRepository.findAllByCargo(idCargo);
+        }
+
+        @Override
+        public List<Egresso> findAllByCurso(Integer idCurso) {
+            return egressoRepository.findAllByCurso(idCurso);
+        }
+         */
 }
->>>>>>> 3af1fcb159c93579c7f5335730431f1bb084e35f
+

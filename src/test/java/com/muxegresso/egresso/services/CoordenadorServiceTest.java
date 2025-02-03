@@ -49,7 +49,7 @@ public class CoordenadorServiceTest {
     @Transactional
     public void deveGerarErroAoTentarSalvarSemSenha() {
         Coordenador coordenador = new Coordenador();
-        coordenador.setLogin("login teste");
+        coordenador.setEmail("login teste");
         coordenador.setTipo("flip");
 
         Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.save(coordenador), "Defina uma senha para o coordenador!");
@@ -60,7 +60,7 @@ public class CoordenadorServiceTest {
     @Transactional
     public void deveGerarErroAoTentarSalvarSemTipo() {
         Coordenador coordenador = new Coordenador();
-        coordenador.setLogin("login teste");
+        coordenador.setEmail("login teste");
         coordenador.setSenha("mux123");
 
         Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.save(coordenador), "O tipo do coordenador deve estar preenchido");
@@ -71,7 +71,7 @@ public class CoordenadorServiceTest {
     @Transactional
     public void deveGerarErroAoTentarSalvarLoginJaCadastrado() {
         Coordenador coordenador = new Coordenador();
-        coordenador.setLogin("coordenador1");
+        coordenador.setEmail("coordenador1");
         coordenador.setSenha("mux123");
         coordenador.setTipo("flip");
 
@@ -85,7 +85,7 @@ public class CoordenadorServiceTest {
         Coordenador coordenador = coordenadorRepository.findById(2001).orElseThrow(()-> new ResourceNotFoundException(2001));
         assert coordenador != null;
 
-        coordenador.setLogin(null);
+        coordenador.setEmail(null);
         coordenador.setSenha("mux123");
         coordenador.setTipo("flip");
 
@@ -100,7 +100,7 @@ public class CoordenadorServiceTest {
         assert coordenador != null;
 
         coordenador.setSenha(null);
-        coordenador.setLogin("login teste");
+        coordenador.setEmail("login teste");
         coordenador.setTipo("flip");
 
         Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.update(coordenador), "Defina uma senha para o coordenador!");
@@ -114,7 +114,7 @@ public class CoordenadorServiceTest {
         assert coordenador != null;
 
         coordenador.setTipo(null);
-        coordenador.setLogin("login teste");
+        coordenador.setEmail("login teste");
         coordenador.setSenha("mux123");
 
         Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.update(coordenador), "O tipo do coordenador deve estar preenchido");
@@ -129,7 +129,7 @@ public class CoordenadorServiceTest {
                 .setParameter("id", 2001)
                 .getSingleResult();
 
-        coordenadorSalvo.setLogin("coordenador2");
+        coordenadorSalvo.setEmail("coordenador2");
         Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.update(coordenadorSalvo), "O login já existe, por favor tente um diferente!");
         Assertions.assertEquals("O login já existe, por favor tente um diferente!", exception.getMessage());
     }
@@ -139,7 +139,7 @@ public class CoordenadorServiceTest {
     public void deveGerarErroAoAtualizarCoordenadorNaoExistente() {
         Coordenador coordenador = new Coordenador();
         coordenador.setId(2001);
-        coordenador.setLogin("login teste");
+        coordenador.setEmail("login teste");
         coordenador.setSenha("mux123");
         coordenador.setTipo("flip");
 
@@ -176,12 +176,12 @@ public class CoordenadorServiceTest {
     @Transactional
     public void deveGerarErroAoCadastrarCursoComCoordenadorInvalido() {
         Coordenador coordenador = new Coordenador();
-        coordenador.setLogin("loginInvalido");
+        coordenador.setEmail("loginInvalido");
         coordenador.setSenha("mux123");
         coordenador.setTipo("flip");
 
         Exception exception = Assertions.assertThrows(Exception.class,
-                () -> coordenadorService.addCurso(coordenador.getLogin(), "Ciência da Computação", "nivel teste"),
+                () -> coordenadorService.addCurso(coordenador.getEmail(), "Ciência da Computação", "nivel teste"),
                 "Login inválido");
 
         Assertions.assertEquals("Login inválido", exception.getMessage());
@@ -207,7 +207,7 @@ public class CoordenadorServiceTest {
         Coordenador coordenador = coordenadorRepository.findById(2001).orElseThrow(()-> new ResourceNotFoundException(2001));
         assert coordenador != null;
 
-        Curso cursoSalvo = coordenadorService.addCurso(coordenador.getLogin(), "Ciência da Computação", "nivel teste");
+        Curso cursoSalvo = coordenadorService.addCurso(coordenador.getEmail(), "Ciência da Computação", "nivel teste");
 
         Assertions.assertEquals(coordenador, cursoSalvo.getCoordenador());
         Assertions.assertEquals("Ciência da Computação", cursoSalvo.getNome());
@@ -231,14 +231,14 @@ public class CoordenadorServiceTest {
     @Transactional
     public void deveVerificarSalvarOCoordenador() {
         Coordenador coordenador = new Coordenador();
-        coordenador.setLogin("login teste");
+        coordenador.setEmail("login teste");
         coordenador.setSenha("mux123");
         coordenador.setTipo("flip");
 
         Coordenador salvo = coordenadorService.save(coordenador);
 
         Assertions.assertNotNull(salvo);
-        Assertions.assertEquals(coordenador.getLogin(), salvo.getLogin());
+        Assertions.assertEquals(coordenador.getEmail(), salvo.getEmail());
         Assertions.assertEquals(coordenador.getSenha(), salvo.getSenha());
         Assertions.assertEquals(coordenador.getTipo(), salvo.getTipo());
 
@@ -250,14 +250,14 @@ public class CoordenadorServiceTest {
         Coordenador coordenador = coordenadorRepository.findById(2001).orElseThrow(()-> new ResourceNotFoundException(2001));
         assert coordenador != null;
 
-        coordenador.setLogin("login teste");
+        coordenador.setEmail("login teste");
         coordenador.setSenha("mux123");
         coordenador.setTipo("flip");
 
         Coordenador salvo = coordenadorService.save(coordenador);
 
         Assertions.assertNotNull(salvo);
-        Assertions.assertEquals(coordenador.getLogin(), salvo.getLogin());
+        Assertions.assertEquals(coordenador.getEmail(), salvo.getEmail());
         Assertions.assertEquals(coordenador.getSenha(), salvo.getSenha());
         Assertions.assertEquals(coordenador.getTipo(), salvo.getTipo());
     }
