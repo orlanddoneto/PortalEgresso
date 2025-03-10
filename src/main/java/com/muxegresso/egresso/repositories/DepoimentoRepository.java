@@ -16,8 +16,9 @@ public interface DepoimentoRepository extends JpaRepository<Depoimento,Integer> 
     Page<Depoimento> findAllByAno(@Param("ano") int ano, Pageable pageable);
 
 
-    @Query(value = "SELECT * FROM tb_depoimento WHERE data >= CURRENT_DATE - INTERVAL :dias DAY", nativeQuery = true)
+    @Query(value = "SELECT * FROM tb_depoimento WHERE data >= CURRENT_DATE - CAST(:dias || ' days' AS INTERVAL)", nativeQuery = true)
     Page<Depoimento> findDepoimentosRecentes(@Param("dias") int dias, Pageable pageable);
+
 
 }
 

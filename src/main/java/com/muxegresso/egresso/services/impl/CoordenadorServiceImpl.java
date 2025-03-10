@@ -12,7 +12,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.beans.BeanUtils;
 
+
+@Validated
 @Service
 public class CoordenadorServiceImpl implements CoordenadorService {
     @Autowired
@@ -38,10 +42,16 @@ public class CoordenadorServiceImpl implements CoordenadorService {
 
     @Transactional
     public Coordenador save(@Valid Coordenador coordenador){
+        if (coordenadorRepository.existsByEmail(coordenador.getEmail())) {
+            throw new RuntimeException("O e-mail informado já está em uso. Por favor, tente outro!");
+        }
         return coordenadorRepository.save(coordenador);
     }
 
     public Coordenador findById( Integer id){
+        if (id == null) {
+            throw new RuntimeException("ID não pode ser nulo.");
+        }
         Coordenador coordenador = coordenadorRepository.findById(id).orElseThrow(()->new RuntimeException("ID não presente no sistema."));
         return coordenador;
     }
@@ -54,7 +64,7 @@ public class CoordenadorServiceImpl implements CoordenadorService {
 
     @Override
     public Curso addCurso(@NotNull String email, @NotBlank String nome, @NotBlank String nivel) {
-        Coordenador coordenador = coordenadorRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException(email));
+        Coordenador coordenador = coordenadorRepository.findByEmail(email).orElseThrow(()-> new ResourceNotFoundException("E-mail do coordenador é inexistente!"));
 
         Curso curso = new Curso();
 
@@ -82,13 +92,21 @@ public class CoordenadorServiceImpl implements CoordenadorService {
         return coordenador;
     }
 
-    public String update(@Valid Coordenador coordenador){
+    @Transactional
+    public String update(@Valid Coordenador coordenador) {
+        // Busca a entidade atual do banco
         Coordenador coordenadorObj = this.findById(coordenador.getId());
-        if(coordenador.getSenha().equals(coordenadorObj.getSenha())) {
-            coordenadorRepository.save(coordenadorObj);
-            return "Coordenador atualizado com sucesso";
+
+        // Se o e-mail foi alterado, verifica duplicidade
+        if (!coordenadorObj.getEmail().equals(coordenador.getEmail()) &&
+                coordenadorRepository.existsByEmailAndIdNot(coordenador.getEmail(), coordenador.getId())) {
+            throw new RuntimeException("O e-mail informado já está em uso. Por favor, tente outro!");
         }
-        return "Erro ao atualizar coordenador.";
+
+        // Copia todas as propriedades do objeto recebido para o objeto gerenciado (exceto o id)
+        BeanUtils.copyProperties(coordenador, coordenadorObj, "id");
+        coordenadorRepository.save(coordenadorObj);
+        return "Coordenador atualizado com sucesso";
     }
 
     @Transactional

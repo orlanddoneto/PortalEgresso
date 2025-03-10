@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.muxegresso.egresso.domain.enums.UserStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,9 +33,11 @@ public class Egresso extends RepresentationModel<Egresso> implements Serializabl
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @NotBlank(message = "O nome do egresso deve ser informado!")
     @Column(nullable = false, length = 255)
     private String nome;
 
+    @NotBlank(message = "Digite a senha!")
     @Column(nullable = false, length = 255)
     @Size(min = 5, max = 50)
     private String senha;
@@ -43,10 +46,12 @@ public class Egresso extends RepresentationModel<Egresso> implements Serializabl
     @Column(name = "user_status", nullable = false)
     private UserStatus userStatus;
 
+    @NotBlank(message = "O email não foi informado!")
     @Column(unique = true, nullable = false, length = 255)
     @Email
     private String email;
 
+    @NotBlank(message = "O CPF não foi informado!")
     @Column(nullable = false, length = 50)
     private String cpf;
 

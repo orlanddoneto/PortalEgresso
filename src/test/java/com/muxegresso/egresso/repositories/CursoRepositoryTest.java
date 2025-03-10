@@ -1,5 +1,6 @@
 package com.muxegresso.egresso.repositories;
 
+import com.muxegresso.egresso.domain.Coordenador;
 import com.muxegresso.egresso.domain.Curso;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;
@@ -18,6 +19,9 @@ import java.util.Optional;
 public class CursoRepositoryTest {
     @Autowired
     CursoRepository cursoRepository;
+
+    @Autowired
+    CoordenadorRepository coordenadorRepository;
 
     @Test
     @DisplayName("Verifica o salvamento de um curso")
@@ -54,8 +58,17 @@ public class CursoRepositoryTest {
         // Ajusta valores que não devem ser gerados automaticamente
         curso.setId(null);
 
-        // Salva o curso no banco
-        Curso salvoCurso = cursoRepository.save(curso);
+        // Cria um coordenador válido
+        Coordenador coordenadorValido = easyRandom.nextObject(Coordenador.class);
+        coordenadorValido.setId(null);
+        coordenadorValido.setNome("Coordenador Exemplo");
+
+        coordenadorValido.getCursos().add(curso);
+        curso.setCoordenador(coordenadorValido);
+
+        coordenadorValido = coordenadorRepository.save(coordenadorValido);
+        Curso salvoCurso=cursoRepository.save(curso);
+
 
         // Atualiza o nome do curso e salva novamente
         salvoCurso.setNome("novoNome");

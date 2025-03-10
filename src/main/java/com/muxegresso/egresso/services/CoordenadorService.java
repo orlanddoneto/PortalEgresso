@@ -2,6 +2,8 @@ package com.muxegresso.egresso.services;
 
 import com.muxegresso.egresso.domain.*;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,7 +14,7 @@ public interface CoordenadorService {
 
     Coordenador save(@Valid Coordenador coordenador);
 
-   Page<Coordenador> findAll(Pageable pageable);
+    Page<Coordenador> findAll(Pageable pageable);
 
     Coordenador delete(Integer id);
 
@@ -28,9 +30,9 @@ public interface CoordenadorService {
 
     Coordenador findById(Integer id);
 
-    Depoimento lincarDepoimentoEgresso(Egresso egresso, Depoimento depoimento);
+    Depoimento lincarDepoimentoEgresso(@NotNull Egresso egresso, @NotNull Depoimento depoimento);
 
-    Curso addCurso(String login, String nomeTeste, String nivelTeste);
+    Curso addCurso(@NotNull String email, @NotBlank String nome, @NotBlank String nivel);
 
-    Cargo addCargo(Egresso egresso, Cargo cargo);
+    Cargo addCargo(@NotNull Egresso egresso, @NotNull Cargo cargo);
 }

@@ -255,7 +255,7 @@ public class EgressoServiceTest {
         ApiResponse atualizado = egressoServiceImpl.updateEgresso(modelMapper.map(egresso, RequestEgressoDto.class));
 
         Assertions.assertNotNull(atualizado);
-        Assertions.assertTrue(atualizado.isSucess());
+        Assertions.assertTrue(atualizado.isSuccess());
         Assertions.assertEquals(egresso.toString(), atualizado.toString());
     }
 

@@ -23,6 +23,7 @@ public class RequestEgressoDto implements Serializable {
         public static interface ImageUpdate {}
     }
 
+    @JsonView({EgressoView.EgressoUpdate.class, EgressoView.PasswordUpdate.class})
     private Integer id;
 
     @NotBlank(groups = {EgressoView.RegistrationPost.class, EgressoView.EgressoUpdate.class})

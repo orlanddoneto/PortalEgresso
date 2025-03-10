@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -37,7 +38,7 @@ public class EgressoControllerTest {
     MockMvc mvc;
 
     @MockitoBean
-    EgressoServiceImpl egressoService;
+    EgressoServiceImpl egressoServiceImpl;
 
 
     @Test
@@ -57,7 +58,7 @@ public class EgressoControllerTest {
         egresso.setEmail("efiwefiwe");
         egresso.setSenha("1234");
 
-        Mockito.when(egressoService.save(Mockito.any(RequestEgressoDto.class))).thenReturn(egresso);
+        Mockito.when(egressoServiceImpl.save(Mockito.any(RequestEgressoDto.class))).thenReturn(egresso);
 
         String egressoDtoJson = new ObjectMapper().writeValueAsString(requestEgressoDto);
 
@@ -83,7 +84,7 @@ public class EgressoControllerTest {
         egresso.setSenha("1234");
 
 
-        Mockito.when(egressoService.getEgressoByCpf("2039413402"))
+        Mockito.when(egressoServiceImpl.getEgressoByCpf("2039413402"))
                 .thenReturn(Optional.of(egresso));
 
 
@@ -118,7 +119,7 @@ public class EgressoControllerTest {
         Page<Egresso> egressosPage = new PageImpl<>(List.of(egresso1, egresso2));
 
 
-        Mockito.when(egressoService.findAll(Mockito.any(), Mockito.any(Pageable.class)))
+        Mockito.when(egressoServiceImpl.findAll(Mockito.any(), Mockito.any(Pageable.class)))
                 .thenReturn(egressosPage);
 
 
@@ -153,9 +154,9 @@ public class EgressoControllerTest {
         requestEgressoDto.setCpf("12345678901");
         requestEgressoDto.setEmail("atualizado@example.com");
 
-        Mockito.when(egressoService.findById(1)).thenReturn(Optional.of(egresso));
+        Mockito.when(egressoServiceImpl.findById(1)).thenReturn(Optional.of(egresso));
 
-        Mockito.doNothing().when(egressoService).updateEgresso(Mockito.any(Egresso.class), Mockito.any(RequestEgressoDto.class));
+        Mockito.doNothing().when(egressoServiceImpl).updateEgresso(Mockito.any(Egresso.class), Mockito.any(RequestEgressoDto.class));
 
         String requestJson = new ObjectMapper().writeValueAsString(requestEgressoDto);
 
@@ -183,7 +184,7 @@ public class EgressoControllerTest {
         requestEgressoDto.setEmail("naoencontrado@example.com");
 
 
-        Mockito.when(egressoService.findById(99)).thenReturn(Optional.empty());
+        Mockito.when(egressoServiceImpl.findById(99)).thenReturn(Optional.empty());
 
 
         String requestJson = new ObjectMapper().writeValueAsString(requestEgressoDto);
@@ -209,7 +210,7 @@ public class EgressoControllerTest {
         requestEgressoDto.setId(1); // ID válido
         requestEgressoDto.setSenha("novaSenha123");
 
-        Mockito.when(egressoService.existsById(1)).thenReturn(true);
+        Mockito.when(egressoServiceImpl.existsById(1)).thenReturn(true);
 
         String requestJson = new ObjectMapper().writeValueAsString(requestEgressoDto);
 
@@ -231,7 +232,7 @@ public class EgressoControllerTest {
         requestEgressoDto.setId(99); // ID inexistente
         requestEgressoDto.setSenha("novaSenha123");
 
-        Mockito.when(egressoService.existsById(99)).thenReturn(false);
+        Mockito.when(egressoServiceImpl.existsById(99)).thenReturn(false);
 
         String requestJson = new ObjectMapper().writeValueAsString(requestEgressoDto);
 

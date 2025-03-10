@@ -9,9 +9,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class ApiResponse implements Serializable {
 
-    private boolean sucess;
+    private boolean success;
 
-    private String mensage;
+    private String message;
 
 
 }

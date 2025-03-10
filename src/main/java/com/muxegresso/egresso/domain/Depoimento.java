@@ -3,6 +3,7 @@ package com.muxegresso.egresso.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,6 +31,7 @@ public class Depoimento implements Serializable {
     @JoinColumn(name = "id_egresso")
     private Egresso egresso;
 
+    @NotBlank(message = "O texto do depoimento deve ser informado!")
     @Column(columnDefinition = "TEXT")
     private String texto;
 

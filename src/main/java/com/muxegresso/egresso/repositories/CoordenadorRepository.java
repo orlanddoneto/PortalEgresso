@@ -11,4 +11,8 @@ public interface CoordenadorRepository extends JpaRepository<Coordenador,Integer
     Optional<Coordenador> findByEmail(String email);
 
 
+    boolean existsByEmail(String email);
+
+    boolean existsByEmailAndIdNot(String email, Integer id);
+
 }

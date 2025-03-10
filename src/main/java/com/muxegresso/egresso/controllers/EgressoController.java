@@ -76,12 +76,12 @@ public class EgressoController {
     public ResponseEntity<Object> updateEgresso(@RequestBody @JsonView(RequestEgressoDto.EgressoView.EgressoUpdate.class) RequestEgressoDto requestEgressoDto){
 
         var egressoOptional = egressoServiceImpl.findById(requestEgressoDto.getId());
-        if (egressoOptional.isPresent()){
+        if (!egressoOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(false, "Egresso não encontrado"));
         }
         egressoServiceImpl.updateEgresso(egressoOptional.get(), requestEgressoDto);
+        return ResponseEntity.ok().body(new ApiResponse(true, "id: " + requestEgressoDto.getId() + "- Egresso Atualizado !"));
 
-        return ResponseEntity.ok().body(new ApiResponse(true, "id: "+requestEgressoDto.getId()+"- Egresso Atualizado !"));
     }
 
     @Transactional

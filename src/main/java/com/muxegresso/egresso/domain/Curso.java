@@ -2,6 +2,7 @@ package com.muxegresso.egresso.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,9 +24,11 @@ public class Curso implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @NotBlank(message = "O nome do curso deve ser informado!")
     @Column(nullable = false, length = 255)
     private String nome;
 
+    @NotBlank(message = "O nível do curso deve ser informado!")
     @Column(nullable = false, length = 255)
     private String nivel;
 

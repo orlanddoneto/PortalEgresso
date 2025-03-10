@@ -22,6 +22,7 @@ public class EgressoRepositoryTest {
         EasyRandom easyRandom = new EasyRandom();
         Egresso egresso = easyRandom.nextObject(Egresso.class);
         egresso.setId(null);
+        egresso.setEmail("email testando");
         Egresso salvoEgresso = egressoRepository.save(egresso);
 
         Assertions.assertNotNull(salvoEgresso);
@@ -39,6 +40,7 @@ public class EgressoRepositoryTest {
         EasyRandom easyRandom = new EasyRandom();
         Egresso egresso = easyRandom.nextObject(Egresso.class);
         egresso.setId(null);
+        egresso.setEmail("email testando2");
         Egresso salvoEgresso = egressoRepository.save(egresso);
         Integer idEgresso = salvoEgresso.getId();
 
@@ -56,6 +58,7 @@ public class EgressoRepositoryTest {
         EasyRandom easyRandom = new EasyRandom();
         Egresso egresso = easyRandom.nextObject(Egresso.class);
         egresso.setId(null);
+        egresso.setEmail("email testando3");
         Egresso salvoEgresso = egressoRepository.save(egresso);
         salvoEgresso.setNome("nomeDiferente");
 

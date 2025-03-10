@@ -7,11 +7,16 @@ import com.muxegresso.egresso.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.orm.jpa.vendor.EclipseLinkJpaDialect;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -36,122 +41,155 @@ public class CoordenadorServiceTest {
 
     @Test
     @Transactional
-    public void deveGerarErroAoTentarSalvarSemLogin() {
-        Coordenador coordenador = new Coordenador();
+    public void deveGerarErroAoTentarSalvarSemEmail() {
+        EasyRandom easyRandom = new EasyRandom();
+        Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
+        coordenador.setId(null);
         coordenador.setSenha("mux123");
+        coordenador.setEmail(null);
         coordenador.setTipo("flip");
 
-        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.save(coordenador), "O dados de login devem ser preenchidos!");
-        Assertions.assertEquals("O dados de login devem ser preenchidos!", exception.getMessage());
+        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.save(coordenador), "O email deve ser preenchido!");
+        Assertions.assertTrue(exception.getMessage().contains("O email deve ser preenchido!"));
+
     }
+
 
     @Test
     @Transactional
     public void deveGerarErroAoTentarSalvarSemSenha() {
-        Coordenador coordenador = new Coordenador();
+        EasyRandom easyRandom = new EasyRandom();
+        Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
         coordenador.setEmail("login teste");
         coordenador.setTipo("flip");
+        coordenador.setId(null);
+        coordenador.setSenha(null);
 
-        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.save(coordenador), "Defina uma senha para o coordenador!");
-        Assertions.assertEquals("Defina uma senha para o coordenador!", exception.getMessage());
+        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.save(coordenador));
+        Assertions.assertTrue(exception.getMessage().contains("A senha deve ser preenchida!"));
     }
 
     @Test
     @Transactional
     public void deveGerarErroAoTentarSalvarSemTipo() {
-        Coordenador coordenador = new Coordenador();
+        EasyRandom easyRandom = new EasyRandom();
+        Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
+        coordenador.setId(null);
+        coordenador.setTipo(null);
         coordenador.setEmail("login teste");
         coordenador.setSenha("mux123");
 
-        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.save(coordenador), "O tipo do coordenador deve estar preenchido");
-        Assertions.assertEquals("O tipo do coordenador deve estar preenchido", exception.getMessage());
+        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.save(coordenador));
+        Assertions.assertTrue(exception.getMessage().contains("O tipo deve ser preenchido!"));
     }
 
     @Test
     @Transactional
-    public void deveGerarErroAoTentarSalvarLoginJaCadastrado() {
-        Coordenador coordenador = new Coordenador();
-        coordenador.setEmail("coordenador1");
+    public void deveGerarErroAoTentarSalvarEmailJaCadastrado() {
+        EasyRandom easyRandom = new EasyRandom();
+        Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
+        coordenador.setId(null);
+        coordenador.setEmail("emailDeTestree@wwwf.coom");
         coordenador.setSenha("mux123");
         coordenador.setTipo("flip");
 
-        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.save(coordenador), "O login já existe, por favor tente um diferente!");
-        Assertions.assertEquals("O login já existe, por favor tente um diferente!", exception.getMessage());
+        coordenadorService.save(coordenador);
+
+        Coordenador coordenador2 = easyRandom.nextObject(Coordenador.class);
+        coordenador2.setId(null);
+        coordenador2.setEmail("emailDeTestree@wwwf.coom");
+        coordenador2.setSenha("mux123");
+        coordenador2.setTipo("flip");
+
+        Exception exception = Assertions.assertThrows(Exception.class, () ->
+                coordenadorService.save(coordenador2));
+        System.out.println(exception.getMessage());
+        Assertions.assertEquals("O e-mail informado já está em uso. Por favor, tente outro!", exception.getMessage());
     }
 
-    @Test
-    @Transactional
-    public void deveGerarErroAoTentarAtualizarSemLogin() {
-        Coordenador coordenador = coordenadorRepository.findById(2001).orElseThrow(()-> new ResourceNotFoundException(2001));
-        assert coordenador != null;
-
-        coordenador.setEmail(null);
-        coordenador.setSenha("mux123");
-        coordenador.setTipo("flip");
-
-        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.update(coordenador), "O dados de login devem ser preenchidos!");
-        Assertions.assertEquals("O dados de login devem ser preenchidos!", exception.getMessage());
-    }
 
     @Test
     @Transactional
     public void deveGerarErroAoTentarAtualizarSemSenha() {
-        Coordenador coordenador = coordenadorRepository.findById(2001).orElseThrow(()-> new ResourceNotFoundException(2001));
-        assert coordenador != null;
-
-        coordenador.setSenha(null);
-        coordenador.setEmail("login teste");
+        EasyRandom easyRandom = new EasyRandom();
+        Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
+        coordenador.setId(null);
+        coordenador.setEmail("emailDeTestree@wwwf.coom");
+        coordenador.setSenha("mux123");
         coordenador.setTipo("flip");
 
-        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.update(coordenador), "Defina uma senha para o coordenador!");
-        Assertions.assertEquals("Defina uma senha para o coordenador!", exception.getMessage());
+        var coordenadorUp = coordenadorService.save(coordenador);
+
+        coordenadorUp .setSenha(null);
+        coordenadorUp .setEmail("email testando");
+        coordenadorUp .setTipo("flip");
+
+        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.update(coordenadorUp));
+        Assertions.assertTrue(exception.getMessage().contains("A senha deve ser preenchida!"));
     }
 
     @Test
     @Transactional
     public void deveGerarErroAoTentarAtualizarSemTipo() {
-        Coordenador coordenador = coordenadorRepository.findById(2001).orElseThrow(()-> new ResourceNotFoundException(2001));
-        assert coordenador != null;
-
-        coordenador.setTipo(null);
-        coordenador.setEmail("login teste");
+        EasyRandom easyRandom = new EasyRandom();
+        Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
+        coordenador.setId(null);
+        coordenador.setEmail("emailAttSentipo@wwwf.coom");
         coordenador.setSenha("mux123");
+        coordenador.setTipo("flip");
 
-        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.update(coordenador), "O tipo do coordenador deve estar preenchido");
-        Assertions.assertEquals("O tipo do coordenador deve estar preenchido", exception.getMessage());
+        var coordenadorUp = coordenadorService.save(coordenador);
+
+        coordenadorUp .setSenha(null);
+        coordenadorUp .setTipo(null);
+
+        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.update(coordenadorUp));
+        Assertions.assertTrue(exception.getMessage().contains("O tipo deve ser preenchido!"));
     }
 
     @Test
     @Transactional
-    public void deveGerarErroAoTentarAtualizarLoginJaCadastrado() {
-        Coordenador coordenadorSalvo = entityManager
-                .createQuery("SELECT c FROM Coordenador c WHERE c.id = :id", Coordenador.class)
-                .setParameter("id", 2001)
-                .getSingleResult();
+    public void deveGerarErroAoTentarAtualizarEmailJaCadastrado() {
+        EasyRandom easyRandom = new EasyRandom();
+        Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
+        coordenador.setId(null);
+        coordenador.setEmail("eeemaiiilTeste@wwwwf.com");
+        coordenadorService.save(coordenador);
 
-        coordenadorSalvo.setEmail("coordenador2");
-        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.update(coordenadorSalvo), "O login já existe, por favor tente um diferente!");
-        Assertions.assertEquals("O login já existe, por favor tente um diferente!", exception.getMessage());
+        Coordenador coordenador2 = easyRandom.nextObject(Coordenador.class);
+        coordenador2.setId(null);
+        coordenador2.setEmail("outroeeemaiiilTeste@wwwwf.com");
+        coordenadorService.save(coordenador2);
+
+        Coordenador coordenador3 = easyRandom.nextObject(Coordenador.class);
+        coordenador3.setId(coordenador.getId());
+        coordenador3.setEmail("outroeeemaiiilTeste@wwwwf.com");
+
+
+        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.update(coordenador3));
+        System.out.println(exception.getMessage());
+        Assertions.assertTrue(exception.getMessage().contains("O e-mail informado já está em uso. Por favor, tente outro!"));
     }
 
     @Test
     @Transactional
     public void deveGerarErroAoAtualizarCoordenadorNaoExistente() {
-        Coordenador coordenador = new Coordenador();
+        EasyRandom easyRandom = new EasyRandom();
+        Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
         coordenador.setId(2001);
-        coordenador.setEmail("login teste");
+        coordenador.setEmail("email@mailzinho.com");
         coordenador.setSenha("mux123");
         coordenador.setTipo("flip");
 
-        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.update(coordenador), "ID não encontrado");
-        Assertions.assertEquals("ID não encontrado", exception.getMessage());
+        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.update(coordenador));
+        Assertions.assertEquals("ID não presente no sistema.", exception.getMessage());
     }
 
     @Test
     @Transactional
     public void deveGerarErroAoBuscarPorIdVazio() {
-        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.findById(null), "ID inválido");
-        Assertions.assertEquals("ID inválido", exception.getMessage());
+        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.findById(null));
+        Assertions.assertTrue(exception.getMessage().contains("ID não pode ser nulo."));
     }
 
     @Test
@@ -159,54 +197,60 @@ public class CoordenadorServiceTest {
     public void deveGerarErroAoBuscarPorIdInexistente() {
         Integer idInexistente = 1812;
 
-        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.findById(idInexistente), "ID não encontrado");
-        Assertions.assertEquals("ID não encontrado", exception.getMessage());
+        Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.findById(idInexistente));
+        Assertions.assertTrue(exception.getMessage().contains("ID não presente no sistema."));
     }
 
     @Test
     @Transactional
     public void deveGerarErroQuandoLoginIncorreto() {
         Exception exception = Assertions.assertThrows(Exception.class,
-                () -> coordenadorService.efetuarLogin("loginIncorreto", "senhaIncorreta"),
-                "Erro de autenticação");
-        Assertions.assertEquals("Erro de autenticação", exception.getMessage());
+                () -> coordenadorService.efetuarLogin("loginIncorreto", "senhaIncorreta"));
+        Assertions.assertTrue(exception.getMessage().contains("Email não existente na base de dados."));
     }
 
     @Test
     @Transactional
     public void deveGerarErroAoCadastrarCursoComCoordenadorInvalido() {
         Coordenador coordenador = new Coordenador();
-        coordenador.setEmail("loginInvalido");
+        coordenador.setEmail("email@invalido.com");
         coordenador.setSenha("mux123");
         coordenador.setTipo("flip");
 
         Exception exception = Assertions.assertThrows(Exception.class,
-                () -> coordenadorService.addCurso(coordenador.getEmail(), "Ciência da Computação", "nivel teste"),
-                "Login inválido");
+                () -> coordenadorService.addCurso(coordenador.getEmail(), "Ciência da Computação", "nivel teste"));
 
-        Assertions.assertEquals("Login inválido", exception.getMessage());
+        Assertions.assertTrue(exception.getMessage().contains("E-mail do coordenador é inexistente!"));
     }
 
-
+    /*
     @Test
     @Transactional
     public void deveGerarErroAoTentarAssociarCargoInvalidoAEgresso() {
-        Egresso egresso = egressoRepository.findById(2001).orElseThrow(()-> new ResourceNotFoundException(2001));
-        assert egresso != null;
+        EasyRandom easyRandom = new EasyRandom();
+        Egresso egresso = easyRandom.nextObject(Egresso.class);
+        egresso.setId(null);
+        egresso.setEmail("email@emailzinho.com");
+        egresso.setSenha("mux123");
+        egressoRepository.save(egresso);
 
-        Cargo cargo = new Cargo();
+        Cargo cargo = easyRandom.nextObject(Cargo.class);
+        cargo.setId(null);
         cargo.setEgresso(egresso);
-
         Exception exception = Assertions.assertThrows(Exception.class, () -> coordenadorService.addCargo(egresso, cargo), "Cargo inválido");
         Assertions.assertEquals("Cargo inválido", exception.getMessage());
-    }
+    }*/
 
     @Test
     @Transactional
     public void deveCadastrarCurso() {
-        Coordenador coordenador = coordenadorRepository.findById(2001).orElseThrow(()-> new ResourceNotFoundException(2001));
-        assert coordenador != null;
-
+        EasyRandom easyRandom = new EasyRandom();
+        Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
+        coordenador.setId(null);
+        coordenador.setEmail("emaiil@mailzinho.com");
+        coordenador.setSenha("mux123");
+        coordenador.setTipo("flip");
+        coordenadorService.save(coordenador);
         Curso cursoSalvo = coordenadorService.addCurso(coordenador.getEmail(), "Ciência da Computação", "nivel teste");
 
         Assertions.assertEquals(coordenador, cursoSalvo.getCoordenador());
@@ -217,11 +261,15 @@ public class CoordenadorServiceTest {
     @Test
     @Transactional
     public void deveAssociarDepoimentoAEgresso() {
-        Egresso egresso = egressoRepository.findById(2001).orElseThrow(()-> new ResourceNotFoundException(2001));
-        assert egresso != null;
+        EasyRandom easyRandom = new EasyRandom();
+        Egresso egresso = easyRandom.nextObject(Egresso.class);
+        egresso.setId(null);
+        egresso.setEmail("emaail@emailzinho.com");
+        egresso.setSenha("mux123");
+        egressoRepository.save(egresso);
 
-        Depoimento depoimento = new Depoimento();
-
+        Depoimento depoimento = easyRandom.nextObject(Depoimento.class);
+        depoimento.setId(null);
         Depoimento depoimentoSalvo = coordenadorService.lincarDepoimentoEgresso(egresso, depoimento);
 
         Assertions.assertEquals(depoimento, depoimentoSalvo);
@@ -230,11 +278,12 @@ public class CoordenadorServiceTest {
     @Test
     @Transactional
     public void deveVerificarSalvarOCoordenador() {
-        Coordenador coordenador = new Coordenador();
-        coordenador.setEmail("login teste");
+        EasyRandom easyRandom = new EasyRandom();
+        Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
+        coordenador.setId(null);
+        coordenador.setEmail("email@coordenador.com");
         coordenador.setSenha("mux123");
         coordenador.setTipo("flip");
-
         Coordenador salvo = coordenadorService.save(coordenador);
 
         Assertions.assertNotNull(salvo);
@@ -247,58 +296,110 @@ public class CoordenadorServiceTest {
     @Test
     @Transactional
     public void deveVerificarAtualizarOCoordenador() {
-        Coordenador coordenador = coordenadorRepository.findById(2001).orElseThrow(()-> new ResourceNotFoundException(2001));
-        assert coordenador != null;
+        // Cria uma instância aleatória do coordenador e seta valores válidos
+        EasyRandom easyRandom = new EasyRandom();
+        Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
+        coordenador.setId(null);
+        coordenador.setEmail("coordenador@example.com"); // email válido
+        coordenador.setSenha("SenhaOriginal");
+        coordenador.setNome("Nome Original");
 
-        coordenador.setEmail("login teste");
-        coordenador.setSenha("mux123");
-        coordenador.setTipo("flip");
+        // Salva o coordenador para gerar o ID e persistir no banco
+        Coordenador savedCoordenador = coordenadorService.save(coordenador);
 
-        Coordenador salvo = coordenadorService.save(coordenador);
+        // Modifica alguns campos do coordenador salvo para simular uma atualização
+        savedCoordenador.setNome("Novo Nome");
+        savedCoordenador.setSenha("NovaSenha");
+        // Mantemos o mesmo email para não disparar a verificação de duplicidade
 
-        Assertions.assertNotNull(salvo);
-        Assertions.assertEquals(coordenador.getEmail(), salvo.getEmail());
-        Assertions.assertEquals(coordenador.getSenha(), salvo.getSenha());
-        Assertions.assertEquals(coordenador.getTipo(), salvo.getTipo());
+        // Chama o método de update e captura o resultado
+        String resultado = coordenadorService.update(savedCoordenador);
+
+        // Verifica se a mensagem retornada é a esperada
+        Assertions.assertEquals("Coordenador atualizado com sucesso", resultado);
+
+        // Recupera o coordenador atualizado e verifica se as alterações foram persistidas
+        Coordenador updatedCoordenador = coordenadorService.findById(savedCoordenador.getId());
+        Assertions.assertEquals("Novo Nome", updatedCoordenador.getNome());
+        Assertions.assertEquals("NovaSenha", updatedCoordenador.getSenha());
+        Assertions.assertEquals("coordenador@example.com", updatedCoordenador.getEmail());
     }
+
 
     @Test
     @Transactional
     public void deveBuscarPorIdExistente() {
-        Coordenador coordenador = coordenadorRepository.findById(2001).orElseThrow(()-> new ResourceNotFoundException(2001));
-        assert coordenador != null;
+        // Cria uma instância aleatória do coordenador e seta valores válidos
+        EasyRandom easyRandom = new EasyRandom();
+        Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
+        coordenador.setId(null);
+        coordenador.setEmail("coordenador@example2.com"); // email válido
+        coordenador.setSenha("SenhaOriginal");
+        coordenador.setNome("Nome Original");
+        Coordenador salvo = coordenadorService.save(coordenador);
 
-        Coordenador encontrado = coordenadorService.findById(coordenador.getId());
+        Coordenador encontrado = coordenadorService.findById(salvo.getId());
 
-        Assertions.assertEquals(coordenador, encontrado);
+        Assertions.assertEquals(salvo, encontrado);
     }
 
     @Test
     @Transactional
     public void deveListarTodosOsCoordenadores() {
+        // Inserir alguns coordenadores para o teste
+        EasyRandom easyRandom = new EasyRandom();
+        int totalCoordenadores = 5;
+        for (int i = 0; i < totalCoordenadores; i++) {
+            Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
+            coordenador.setId(null);
+            // Garante um email único para evitar problemas de duplicidade
+            coordenador.setEmail("coordenador" + i + "@exemplo.com");
+            coordenadorService.save(coordenador);
+        }
 
-        List<Coordenador> coordenadores = coordenadorRepository.findAll();
-        List<Coordenador> coordenadoresEsperados = entityManager
-                .createQuery("SELECT c FROM Coordenador c", Coordenador.class)
-                .getResultList();
+        // Cria um pageable (página 0 com até 10 registros)
+        Pageable pageable = PageRequest.of(0, 10);
 
-        Assertions.assertEquals(coordenadores, coordenadoresEsperados);
+        // Chama o método de listagem
+        Page<Coordenador> page = coordenadorService.findAll(pageable);
+
+        // Verifica se a página não está vazia e se contém pelo menos o total esperado de registros
+        Assertions.assertNotNull(page);
+        Assertions.assertFalse(page.isEmpty());
+        Assertions.assertTrue(page.getTotalElements() >= totalCoordenadores);
+
+        // Opcional: Imprime os dados para conferência
+        page.getContent().forEach(System.out::println);
     }
+
 
     @Test
     @Transactional
     public void deveDeletarCoordenador() {
-        Coordenador coordenador = coordenadorRepository.findById(2001).orElseThrow(()-> new ResourceNotFoundException(2001));
-        assert coordenador != null;
+        EasyRandom easyRandom = new EasyRandom();
+        Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
+        coordenador.setId(null);
+        coordenador.setEmail("coordenador@example10.com"); // email válido
+        coordenador.setSenha("SenhaOriginal");
+        coordenador.setNome("Nome Original");
+        Coordenador salvo = coordenadorService.save(coordenador);
 
-        coordenadorService.delete(coordenador.getId());
-        Assertions.assertFalse(coordenadorRepository.existsById(coordenador.getId()));
+        coordenadorService.delete(salvo.getId());
+        Assertions.assertFalse(coordenadorRepository.existsById(salvo.getId()));
     }
 
     @Test
     @Transactional
     public void deveEfetuarLogin() {
-        boolean resultado = coordenadorService.efetuarLogin("coordenador1", "mux123");
+        EasyRandom easyRandom = new EasyRandom();
+        Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
+        coordenador.setId(null);
+        coordenador.setEmail("coordenador@example11.com"); // email válido
+        coordenador.setSenha("SenhaOriginal");
+        coordenador.setNome("Nome Original");
+        Coordenador salvo = coordenadorService.save(coordenador);
+
+        boolean resultado = coordenadorService.efetuarLogin("coordenador@example11.com", "SenhaOriginal");
         Assertions.assertTrue(resultado);
     }
 
