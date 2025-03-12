@@ -40,11 +40,8 @@ public interface EgressoService {
 
     void delete(Integer id);
 
-    /*
-    List<Egresso> findAllByCurso(Integer idCurso);
+    Page<Cargo> findAllCargos(Integer idEgresso, Pageable pageable);
 
-    List<Egresso> findAllByCargo(Integer idCargo);
-    */
     public String efetuarLogin(String email, String senha);
 
     public ApiResponse homologarEgresso(Integer id, UsuarioDTO usuarioDTO);

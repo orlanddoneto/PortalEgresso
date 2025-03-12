@@ -2,7 +2,9 @@ package com.muxegresso.egresso.controllers;
 
 import com.muxegresso.egresso.domain.Curso;
 import com.muxegresso.egresso.domain.Depoimento;
+import com.muxegresso.egresso.domain.Egresso;
 import com.muxegresso.egresso.services.CursoService;
+import com.muxegresso.egresso.services.Curso_EgressoService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class CursoController {
 
     @Autowired
     private CursoService cursoService;
+
+    @Autowired
+    private Curso_EgressoService cursoEgressoService;
 
     @GetMapping
     public ResponseEntity<Page<Curso>> findAll(Pageable pageable){
@@ -55,4 +60,12 @@ public class CursoController {
 
         return ResponseEntity.ok().body(cursoService.update(depoimento));
     }
+
+    @GetMapping("/{id}/egressos")
+    public ResponseEntity<Page<Egresso>> getEgressosByCurso(@PathVariable Integer id, Pageable pageable) {
+        Page<Egresso> egressos = cursoEgressoService.findEgressosByCursoId(id, pageable);
+        return ResponseEntity.ok().body(egressos);
+    }
+
+
 }

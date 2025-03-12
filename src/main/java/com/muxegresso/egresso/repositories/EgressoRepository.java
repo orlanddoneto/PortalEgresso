@@ -3,6 +3,8 @@ package com.muxegresso.egresso.repositories;
 import com.muxegresso.egresso.domain.Cargo;
 import com.muxegresso.egresso.domain.Curso;
 import com.muxegresso.egresso.domain.Egresso;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -23,12 +25,7 @@ public interface EgressoRepository extends JpaRepository<Egresso, Integer>, JpaS
 
     boolean existsByCpf(String cpf);
 
-    /*
-    @Query("SELECT e FROM Egresso e JOIN e.cargos ec WHERE ec.cargo.id = :cargoId")
-    List<Egresso> findAllByCargo(@Param("cargoId") Integer cargoId);
+    @Query("SELECT c FROM Egresso e JOIN e.cargos c WHERE e.id = :id")
+    Page<Cargo> findCargosById(@Param("id") Integer id, Pageable pageable);
 
-    @Query("SELECT e FROM Egresso e JOIN e.egressoCursos ce WHERE ce.curso.id = :cursoId")
-    List<Egresso> findAllByCurso(@Param("cursoId") Integer cursoId);
-
-     */
 }

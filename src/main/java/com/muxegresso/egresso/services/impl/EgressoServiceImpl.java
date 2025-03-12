@@ -134,16 +134,12 @@ import java.util.Optional;
             return new ApiResponse(false, "Erro: necessário um coordenador ou o egresso é inexistente.");
         }
 
-        /*
-        @Override
-        public List<Egresso> findAllByCargo(Integer idCargo) {
-            return egressoRepository.findAllByCargo(idCargo);
-        }
 
         @Override
-        public List<Egresso> findAllByCurso(Integer idCurso) {
-            return egressoRepository.findAllByCurso(idCurso);
+        public Page<Cargo> findAllCargos(Integer idEgresso, Pageable pageable) {
+             return egressoRepository.findCargosById(idEgresso,pageable);
         }
-         */
+
+
 }
 

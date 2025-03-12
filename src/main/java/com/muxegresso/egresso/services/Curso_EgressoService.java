@@ -1,6 +1,8 @@
 package com.muxegresso.egresso.services;
 
+import com.muxegresso.egresso.domain.Curso;
 import com.muxegresso.egresso.domain.Curso_Egresso;
+import com.muxegresso.egresso.domain.Egresso;
 import com.muxegresso.egresso.repositories.Curso_EgressoRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +44,13 @@ public class Curso_EgressoService {
         cursoEgressoRepository.save(cursoEgressoObj);
         return "Curso_Egresso atualizado com sucesso";
 
+    }
+
+    public Page<Curso> findCursosByEgressoId(Integer id, Pageable pageable){
+        return cursoEgressoRepository.findCursosByEgressoId(id,pageable);
+    }
+
+    public Page<Egresso> findEgressosByCursoId(Integer id, Pageable pageable){
+        return cursoEgressoRepository.findEgressosByCursoId(id,pageable);
     }
 }

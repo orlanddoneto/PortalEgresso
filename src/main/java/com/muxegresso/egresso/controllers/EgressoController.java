@@ -1,11 +1,10 @@
 package com.muxegresso.egresso.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.muxegresso.egresso.domain.ApiResponse;
-import com.muxegresso.egresso.domain.Coordenador;
-import com.muxegresso.egresso.domain.Egresso;
+import com.muxegresso.egresso.domain.*;
 import com.muxegresso.egresso.domain.dtos.RequestEgressoDto;
 import com.muxegresso.egresso.domain.dtos.UsuarioDTO;
+import com.muxegresso.egresso.services.Curso_EgressoService;
 import com.muxegresso.egresso.services.impl.EgressoServiceImpl;
 import com.muxegresso.egresso.specifications.SpecificationTemplate;
 import jakarta.transaction.Transactional;
@@ -31,6 +30,9 @@ public class EgressoController {
     private EgressoServiceImpl egressoServiceImpl;
 
     private ModelMapper modelMappper = new ModelMapper();
+
+    @Autowired
+    private Curso_EgressoService cursoEgressoService;
 
     @GetMapping
     public ResponseEntity<Page<Egresso>> getAllEgresso(Pageable pageable){
@@ -98,4 +100,18 @@ public class EgressoController {
         ApiResponse response = egressoServiceImpl.homologarEgresso(id,usuarioDTO);
         return ResponseEntity.ok().body(response);
     }
+
+    @GetMapping("/{id}/cursos")
+    public ResponseEntity<Page<Curso>> getCursosByEgresso(@PathVariable Integer idEgresso, Pageable pageable) {
+        Page<Curso> cursos = cursoEgressoService.findCursosByEgressoId(idEgresso,pageable);
+        return ResponseEntity.ok().body(cursos);
+    }
+
+    @GetMapping("/{id}/cargos")
+    public ResponseEntity<Page<Cargo>> getCargosByEgressoId(@PathVariable("id") Integer id, Pageable pageable) {
+        Page<Cargo> cargos = egressoServiceImpl.findAllCargos(id, pageable);
+        return ResponseEntity.ok().body(cargos);
+    }
+
+
 }
