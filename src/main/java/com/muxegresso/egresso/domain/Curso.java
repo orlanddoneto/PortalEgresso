@@ -1,5 +1,6 @@
 package com.muxegresso.egresso.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -24,17 +25,22 @@ public class Curso implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotBlank(message = "O nome do curso deve ser informado!")
     @Column(nullable = false, length = 255)
     private String nome;
 
-    @NotBlank(message = "O nível do curso deve ser informado!")
     @Column(nullable = false, length = 255)
     private String nivel;
+
+    @ManyToMany
+    @JoinTable(name = "curso_oportunidade",           // nome da tabela de junção
+            joinColumns = @JoinColumn(name = "curso_id"),    // FK para Curso
+            inverseJoinColumns = @JoinColumn(name = "oportunidade_id")) // FK para Oportunidade
+    private Set<Oportunidade> oportunidades = new HashSet<>();
 
     @OneToMany(mappedBy = "curso")
     private Set<Curso_Egresso> cursoEgressos = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "coordenador_id")
     private Coordenador coordenador;

@@ -18,7 +18,7 @@ public interface CoordenadorService {
 
     Coordenador delete(Integer id);
 
-    String update(@Valid Coordenador coordenador);
+    Coordenador update(@Valid Coordenador coordenador);
 
     void RegistrarEgresso(Egresso egresso);
 
@@ -35,4 +35,6 @@ public interface CoordenadorService {
     Curso addCurso(@NotNull String email, @NotBlank String nome, @NotBlank String nivel);
 
     Cargo addCargo(@NotNull Egresso egresso, @NotNull Cargo cargo);
+
+    public boolean existsByEmail(String email);
 }

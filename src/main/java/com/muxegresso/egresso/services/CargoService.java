@@ -4,6 +4,7 @@ import com.muxegresso.egresso.domain.Cargo;
 import com.muxegresso.egresso.domain.Egresso;
 import com.muxegresso.egresso.repositories.CargoRepository;
 import jakarta.validation.Valid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +40,7 @@ public class CargoService {
     @Transactional
     public String update(@Valid Cargo cargo){
         Cargo cargoObj = this.findById(cargo.getId());
+        BeanUtils.copyProperties(cargo,cargoObj,"id");
         cargoRepository.save(cargoObj);
         return "Cargo atualizado com sucesso";
     }

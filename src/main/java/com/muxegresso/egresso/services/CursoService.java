@@ -20,5 +20,5 @@ public interface CursoService{
 
     Curso delete(Integer id);
 
-    String update(@Valid Curso curso);
+    Curso update(@Valid Curso curso);
 }

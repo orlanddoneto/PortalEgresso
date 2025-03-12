@@ -2,8 +2,10 @@ package com.muxegresso.egresso.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.muxegresso.egresso.domain.ApiResponse;
+import com.muxegresso.egresso.domain.Coordenador;
 import com.muxegresso.egresso.domain.Egresso;
 import com.muxegresso.egresso.domain.dtos.RequestEgressoDto;
+import com.muxegresso.egresso.domain.dtos.UsuarioDTO;
 import com.muxegresso.egresso.services.impl.EgressoServiceImpl;
 import com.muxegresso.egresso.specifications.SpecificationTemplate;
 import jakarta.transaction.Transactional;
@@ -15,6 +17,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -29,17 +33,10 @@ public class EgressoController {
     private ModelMapper modelMappper = new ModelMapper();
 
     @GetMapping
-    public ResponseEntity<Page<Egresso>> getAllEgresso(
-            SpecificationTemplate.EgressoSpec spec,
-            @PageableDefault(size = 10, sort = "id") Pageable pageable){
+    public ResponseEntity<Page<Egresso>> getAllEgresso(Pageable pageable){
 
-        var egressolist = egressoServiceImpl.findAll(spec, pageable);
+        Page<Egresso> egressolist = egressoServiceImpl.findAllEgresso(pageable);
 
-        if (!egressolist.isEmpty()) {
-            for (Egresso egresso: egressolist.toList()){
-                egresso.add(linkTo(methodOn(EgressoController.class).getEgressoByCpf(egresso.getCpf())).withSelfRel());
-            }
-        }
         //return ResponseEntity.ok().body(egressolist.map(egresso -> modelMappper.map(egresso, RequestEgressoDto.class)));
         return ResponseEntity.ok().body(egressolist);
     }
@@ -60,10 +57,10 @@ public class EgressoController {
                                                    @JsonView(RequestEgressoDto.EgressoView.RegistrationPost.class) RequestEgressoDto requestEgressoDto){
 
         if (egressoServiceImpl.existsByCpf(requestEgressoDto.getCpf())){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse(false, "CPF já cadastrado !!!"));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse(false, "CPF já cadastrado !"));
         }
         if (egressoServiceImpl.existsByEmail(requestEgressoDto.getEmail())){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse(false, "Email fornecido já cadastrado !!!"));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse(false, "Email fornecido já cadastrado !"));
         }
 
         var response = egressoServiceImpl.save(requestEgressoDto);
@@ -94,5 +91,11 @@ public class EgressoController {
 
         return ResponseEntity.ok().body(new ApiResponse(true, "Senha atualizada"));
 
+    }
+
+    @PutMapping("/{id}/homologar")
+    public ResponseEntity<Object> homologar(@PathVariable Integer id, @RequestParam UsuarioDTO usuarioDTO) {
+        ApiResponse response = egressoServiceImpl.homologarEgresso(id,usuarioDTO);
+        return ResponseEntity.ok().body(response);
     }
 }

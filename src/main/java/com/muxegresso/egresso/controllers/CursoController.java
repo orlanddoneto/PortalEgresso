@@ -52,7 +52,7 @@ public class CursoController {
     @PutMapping
     @Transactional
     public ResponseEntity<Curso> update(@RequestBody Curso depoimento){
-        cursoService.update(depoimento);
-        return ResponseEntity.ok().body(depoimento);
+
+        return ResponseEntity.ok().body(cursoService.update(depoimento));
     }
 }

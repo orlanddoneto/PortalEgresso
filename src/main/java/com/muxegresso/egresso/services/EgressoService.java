@@ -5,6 +5,7 @@ import com.muxegresso.egresso.domain.Cargo;
 import com.muxegresso.egresso.domain.Curso;
 import com.muxegresso.egresso.domain.Egresso;
 import com.muxegresso.egresso.domain.dtos.RequestEgressoDto;
+import com.muxegresso.egresso.domain.dtos.UsuarioDTO;
 import jakarta.validation.Valid;
 
 import jakarta.validation.constraints.NotBlank;
@@ -17,7 +18,7 @@ import java.util.Optional;
 
 public interface EgressoService {
 
-    List<Egresso> findAllEgresso();
+    public Page<Egresso> findAllEgresso(Pageable pageable);
 
     Optional<Egresso> getEgressoByCpf(@NotBlank String cpf);
 
@@ -45,4 +46,6 @@ public interface EgressoService {
     List<Egresso> findAllByCargo(Integer idCargo);
     */
     public String efetuarLogin(String email, String senha);
+
+    public ApiResponse homologarEgresso(Integer id, UsuarioDTO usuarioDTO);
 }

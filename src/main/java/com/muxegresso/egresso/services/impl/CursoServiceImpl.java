@@ -5,6 +5,7 @@ import com.muxegresso.egresso.domain.Curso;
 import com.muxegresso.egresso.repositories.CursoRepository;
 import com.muxegresso.egresso.services.CursoService;
 import jakarta.validation.Valid;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,9 +40,10 @@ public class CursoServiceImpl implements CursoService {
     }
 
     @Transactional
-    public String update(@Valid Curso curso){
+    public Curso update(@Valid Curso curso){
         Curso cursoObj = this.findById(curso.getId());
-        cursoRepository.save(cursoObj);
-        return "Curso atualizado com sucesso";
+        BeanUtils.copyProperties(curso,cursoObj,"id");
+
+        return cursoRepository.save(cursoObj);
     }
 }

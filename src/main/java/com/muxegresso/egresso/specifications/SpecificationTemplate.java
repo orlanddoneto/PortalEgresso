@@ -7,6 +7,8 @@ import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 import org.springframework.data.jpa.domain.Specification;
 
+
+
 public class SpecificationTemplate {
 
     //tem tbm o @Or => vai pegar um ou outro e retornar

@@ -24,7 +24,6 @@ public class Cargo implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @NotBlank(message = "A descrição do cargo deve ser informada!")
     @Column(nullable = false, length = 255)
     private String descricao;
 

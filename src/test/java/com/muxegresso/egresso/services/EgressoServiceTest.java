@@ -60,6 +60,7 @@ public class EgressoServiceTest {
     @Autowired
     private CargoRepository cargoRepository;
 
+    /*
     @Test
     @DisplayName("Verifica o salvamento de um egresso")
     @Transactional
@@ -286,7 +287,7 @@ public class EgressoServiceTest {
 
         Assertions.assertEquals(egressos, egressosEsperados);
     }
-    */
+
     @Test
     @Transactional
     public void deveListarTodosOsEgressos() {

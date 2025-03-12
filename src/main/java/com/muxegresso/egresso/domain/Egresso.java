@@ -79,5 +79,8 @@ public class Egresso extends RepresentationModel<Egresso> implements Serializabl
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    @Column(nullable = false)
+    private boolean homologado;
+
 
 }

@@ -40,8 +40,8 @@ public class RequestEgressoDto implements Serializable {
 
     private UserStatus status;
 
-    @NotBlank(groups = {EgressoView.RegistrationPost.class, EgressoView.PasswordUpdate.class})
-    @JsonView({EgressoView.RegistrationPost.class, EgressoView.PasswordUpdate.class})
+    @NotBlank(groups = {EgressoView.RegistrationPost.class, EgressoView.PasswordUpdate.class })
+    @JsonView({EgressoView.RegistrationPost.class, EgressoView.PasswordUpdate.class,EgressoView.EgressoUpdate.class})
     private String senha;
 
     @NotBlank(groups = EgressoView.PasswordUpdate.class)

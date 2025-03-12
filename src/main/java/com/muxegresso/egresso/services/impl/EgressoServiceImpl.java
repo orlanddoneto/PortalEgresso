@@ -1,12 +1,11 @@
 package com.muxegresso.egresso.services.impl;
 
 
-import com.muxegresso.egresso.domain.ApiResponse;
-import com.muxegresso.egresso.domain.Cargo;
-import com.muxegresso.egresso.domain.Curso;
-import com.muxegresso.egresso.domain.Egresso;
+import com.muxegresso.egresso.domain.*;
 import com.muxegresso.egresso.domain.dtos.RequestEgressoDto;
+import com.muxegresso.egresso.domain.dtos.UsuarioDTO;
 import com.muxegresso.egresso.domain.enums.UserStatus;
+import com.muxegresso.egresso.domain.enums.UserTipo;
 import com.muxegresso.egresso.repositories.CargoRepository;
 import com.muxegresso.egresso.repositories.CursoRepository;
 import com.muxegresso.egresso.repositories.EgressoRepository;
@@ -39,8 +38,8 @@ import java.util.Optional;
 
 
         @Override
-        public List<Egresso> findAllEgresso() {
-            return egressoRepository.findAll();
+        public Page<Egresso> findAllEgresso(Pageable pageable) {
+            return egressoRepository.findAll(pageable);
         }
 
         @Override
@@ -117,6 +116,22 @@ import java.util.Optional;
             Egresso egresso = egressoRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Email não existente na base de dados."));
             if (egresso.getSenha().equals(senha)) return "Login efetuado com sucesso.";
             return "Senha incorreta";
+        }
+
+        @Override
+        public ApiResponse homologarEgresso(Integer id, UsuarioDTO usuarioDTO) {
+            if(usuarioDTO.getTipo().equals(UserTipo.Coordenador)){
+                Optional<Egresso> egresso = this.findById(id);
+                if(egresso.isPresent()){
+                    Egresso egresso1 = egresso.get();
+                    if(!egresso1.isHomologado()){
+                        egresso1.setHomologado(true);
+                        egressoRepository.save(egresso1);
+                        return new ApiResponse(true, "Egresso homologado com sucesso!");
+                    }
+                }
+            }
+            return new ApiResponse(false, "Erro: necessário um coordenador ou o egresso é inexistente.");
         }
 
         /*

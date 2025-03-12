@@ -21,6 +21,7 @@ public class CoordenadorRepositoryTest {
         EasyRandom easyRandom = new EasyRandom();
         Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
         coordenador.setId(null);
+        coordenador.setEmail("email@emailRepository.com");
 
         Coordenador salvoCoordenador = coordenadorRepository.save(coordenador);
 
@@ -36,6 +37,7 @@ public class CoordenadorRepositoryTest {
         EasyRandom easyRandom = new EasyRandom();
         Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
         coordenador.setId(null);
+        coordenador.setEmail("email2@emailRepository.com");
 
         Coordenador salvoCoordenador = coordenadorRepository.save(coordenador);
         Integer id = salvoCoordenador.getId();
@@ -52,6 +54,7 @@ public class CoordenadorRepositoryTest {
         EasyRandom easyRandom = new EasyRandom();
         Coordenador coordenador = easyRandom.nextObject(Coordenador.class);
         coordenador.setId(null);
+        coordenador.setEmail("email3@emailRepository.com");
 
         Coordenador salvoCoordenador = coordenadorRepository.save(coordenador);
         salvoCoordenador.setTipo("tipoTeste");

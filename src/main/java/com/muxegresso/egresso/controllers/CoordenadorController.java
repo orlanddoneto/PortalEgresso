@@ -1,5 +1,6 @@
 package com.muxegresso.egresso.controllers;
 
+import com.muxegresso.egresso.domain.ApiResponse;
 import com.muxegresso.egresso.domain.Coordenador;
 import com.muxegresso.egresso.services.CoordenadorService;
 import jakarta.transaction.Transactional;
@@ -7,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -33,7 +35,11 @@ public class CoordenadorController {
     }
     @PostMapping
     @Transactional
-    public ResponseEntity<Coordenador> create(@RequestBody @Valid Coordenador coordenador){
+    public ResponseEntity<Object> create(@RequestBody @Valid Coordenador coordenador){
+        if (coordenadorService.existsByEmail(coordenador.getEmail())){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse(false, "Email já cadastrado !"));
+        }
+
         coordenador = coordenadorService.save(coordenador);
         URI uri =
                 ServletUriComponentsBuilder.fromCurrentRequest().path("/{id").buildAndExpand(new Coordenador()).toUri();
@@ -51,8 +57,8 @@ public class CoordenadorController {
     @PutMapping
     @Transactional
     public ResponseEntity<Coordenador> update(@RequestBody Coordenador coordenador){
-        coordenadorService.update(coordenador);
-        return ResponseEntity.ok().body(coordenador);
+        Coordenador atualizado = coordenadorService.update(coordenador);
+        return ResponseEntity.ok().body(atualizado);
     }
 }
 

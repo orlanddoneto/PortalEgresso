@@ -40,13 +40,16 @@ public class CoordenadorControllerTest {
         coordenador1.setId(1);
         coordenador1.setTipo("X");
         coordenador1.setNome("nomeTeste");
-        coordenador1.setEmail("loginTeste");
+        coordenador1.setEmail("loginTeste@teste.com");
+        coordenador1.setSenha("senha");
+
 
         Coordenador coordenador2 = new Coordenador();
         coordenador2.setId(2);
-        coordenador2.setTipo("X");
-        coordenador2.setNome("nomeTeste");
-        coordenador2.setEmail("loginTeste");
+        coordenador1.setTipo("X");
+        coordenador1.setNome("nomeTeste2");
+        coordenador1.setEmail("loginTeste2@teste.com");
+        coordenador1.setSenha("senha2");
 
 
         Page<Coordenador> coordenadorPage = new PageImpl<>(List.of(coordenador1, coordenador2));
@@ -72,10 +75,10 @@ public class CoordenadorControllerTest {
     public void deveTestarFindByID() throws Exception {
 
         Coordenador coordenador1 = new Coordenador();
-        coordenador1.setId(1);
         coordenador1.setTipo("X");
-        coordenador1.setNome("nomeTeste");
-        coordenador1.setEmail("loginTeste");
+        coordenador1.setNome("nomeTeste3");
+        coordenador1.setEmail("loginTeste3@teste.com");
+        coordenador1.setSenha("senha3");
 
 
         Mockito.when(coordenadorService.findById(coordenador1.getId()))
@@ -96,10 +99,11 @@ public class CoordenadorControllerTest {
     @DisplayName("Deve testar a criação de um Coordenador")
     public void deveTestarCriarCoordenador() throws Exception {
         Coordenador coordenador1 = new Coordenador();
-        coordenador1.setId(1);
+        coordenador1.setId(null);
         coordenador1.setTipo("X");
-        coordenador1.setNome("nomeTeste");
-        coordenador1.setEmail("loginTeste");
+        coordenador1.setNome("nometest4");
+        coordenador1.setEmail("loginTeste4@teste.com");
+        coordenador1.setSenha("senha4");
         Mockito.when(coordenadorService.save(Mockito.any(Coordenador.class))).thenReturn(coordenador1);
 
         String coordenadorJson = new ObjectMapper().writeValueAsString(coordenador1);
@@ -138,14 +142,16 @@ public class CoordenadorControllerTest {
         Coordenador coordenador1 = new Coordenador();
         coordenador1.setId(1);
         coordenador1.setTipo("X");
-        coordenador1.setNome("nomeTeste");
-        coordenador1.setEmail("loginTeste");
+        coordenador1.setNome("nomeTeste5");
+        coordenador1.setEmail("loginTeste5@teste.com");
+        coordenador1.setSenha("senha5");
 
         Coordenador coordenador2 = new Coordenador();
         coordenador2.setId(1);
-        coordenador2.setTipo("X");
-        coordenador2.setNome("nomeTeeeeeste");
-        coordenador2.setEmail("loginTeeeste");
+        coordenador1.setTipo("X");
+        coordenador1.setNome("nomeTeste6");
+        coordenador1.setEmail("loginTeste6@teste.com");
+        coordenador1.setSenha("senha6");
 
         Mockito.when(coordenadorService.update(Mockito.any(Coordenador.class))).thenReturn("Coordenador atualizado com sucesso");
 

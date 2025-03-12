@@ -93,7 +93,7 @@ public class CoordenadorServiceImpl implements CoordenadorService {
     }
 
     @Transactional
-    public String update(@Valid Coordenador coordenador) {
+    public Coordenador update(@Valid Coordenador coordenador) {
         // Busca a entidade atual do banco
         Coordenador coordenadorObj = this.findById(coordenador.getId());
 
@@ -105,8 +105,7 @@ public class CoordenadorServiceImpl implements CoordenadorService {
 
         // Copia todas as propriedades do objeto recebido para o objeto gerenciado (exceto o id)
         BeanUtils.copyProperties(coordenador, coordenadorObj, "id");
-        coordenadorRepository.save(coordenadorObj);
-        return "Coordenador atualizado com sucesso";
+        return coordenadorRepository.save(coordenadorObj);
     }
 
     @Transactional
@@ -130,6 +129,11 @@ public class CoordenadorServiceImpl implements CoordenadorService {
     public void AdicionarDepoimento(@Valid Egresso egresso, @Valid Depoimento depoimento){
         depoimento.setEgresso(egresso);
         depoimentoRepository.save(depoimento);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return coordenadorRepository.existsByEmail(email);
     }
 
 

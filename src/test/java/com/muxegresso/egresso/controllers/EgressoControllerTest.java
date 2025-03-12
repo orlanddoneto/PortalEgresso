@@ -48,14 +48,15 @@ public class EgressoControllerTest {
         RequestEgressoDto requestEgressoDto = new RequestEgressoDto();
         requestEgressoDto.setNome("NomeTeste");
         requestEgressoDto.setCpf("2039413402");
-        requestEgressoDto.setEmail("efiwefiwe");
+        requestEgressoDto.setEmail("email@teste.com");
         requestEgressoDto.setSenha("1234");
+
 
         //Cria Classe normal
         Egresso egresso = new Egresso();
         egresso.setNome("NomeTeste");
         egresso.setCpf("2039413402");
-        egresso.setEmail("efiwefiwe");
+        egresso.setEmail("email2@teste.com");
         egresso.setSenha("1234");
 
         Mockito.when(egressoServiceImpl.save(Mockito.any(RequestEgressoDto.class))).thenReturn(egresso);
@@ -80,7 +81,7 @@ public class EgressoControllerTest {
         Egresso egresso = new Egresso();
         egresso.setNome("NomeTeste");
         egresso.setCpf("2039413402");
-        egresso.setEmail("efiwefiwe");
+        egresso.setEmail("email3@teste.com");
         egresso.setSenha("1234");
 
 
