@@ -153,7 +153,7 @@ public class CoordenadorControllerTest {
         coordenador1.setEmail("loginTeste6@teste.com");
         coordenador1.setSenha("senha6");
 
-        Mockito.when(coordenadorService.update(Mockito.any(Coordenador.class))).thenReturn("Coordenador atualizado com sucesso");
+        Mockito.when(coordenadorService.update(Mockito.any(Coordenador.class))).thenReturn(coordenador2);
 
         // Conversão do objeto atualizado para JSON
         String requestJson = new ObjectMapper().writeValueAsString(coordenador2);
