@@ -25,9 +25,8 @@ public class DatabaseSeeder {
             Curso_EgressoRepository cursoEgressoRepo
     ) {
         return args -> {
-            /* ==============================
-             * 1) CRIAR COORDENADORES
-             * ============================== */
+
+            /*
             Coordenador coord1 = new Coordenador();
             coord1.setNome("João Silva");
             coord1.setEmail("joao.silva@example.com");
@@ -42,9 +41,8 @@ public class DatabaseSeeder {
             coord2.setTipo("COORDENADOR");
             coordRepo.save(coord2);
 
-            /* ==============================
-             * 2) CRIAR EGRESSOS
-             * ============================== */
+
+            //2) CRIAR EGRESSOS
             Egresso e1 = new Egresso();
             e1.setNome("Carlos Santos");
             e1.setSenha("senha123");
@@ -71,9 +69,8 @@ public class DatabaseSeeder {
             e2.setHomologado(false);
             egressoRepo.save(e2);
 
-            /* ==============================
-             * 3) CRIAR CURSOS (relacionados aos Coordenadores)
-             * ============================== */
+
+            //3) CRIAR CURSOS (relacionados aos Coordenadores)
             Curso c1 = new Curso();
             c1.setNome("Sistemas de Informação");
             c1.setNivel("Bacharelado");
@@ -86,9 +83,9 @@ public class DatabaseSeeder {
             c2.setCoordenador(coord2);
             cursoRepo.save(c2);
 
-            /* ==============================
-             * 4) CRIAR OPORTUNIDADES (Many-to-Many com Curso)
-             * ============================== */
+
+             //4) CRIAR OPORTUNIDADES (Many-to-Many com Curso)
+
             Oportunidade op1 = new Oportunidade();
             op1.setDescricao("Vaga de Estágio em Desenvolvimento");
             op1.setCreatedAt(LocalDateTime.now());
@@ -115,9 +112,9 @@ public class DatabaseSeeder {
             oportunidadeRepo.save(op1);
             oportunidadeRepo.save(op2);
 
-            /* ==============================
-             * 5) CRIAR CARGOS (relacionados a Egresso)
-             * ============================== */
+
+            //5) CRIAR CARGOS (relacionados a Egresso)
+
             Cargo cargo1 = new Cargo();
             cargo1.setDescricao("Desenvolvedor Java");
             cargo1.setLocal("Empresa XYZ");
@@ -134,9 +131,9 @@ public class DatabaseSeeder {
             cargo2.setEgresso(e2);
             cargoRepo.save(cargo2);
 
-            /* ==============================
-             * 6) CRIAR DEPOIMENTOS (relacionados a Egresso)
-             * ============================== */
+
+            //6) CRIAR DEPOIMENTOS (relacionados a Egresso)
+
             Depoimento d1 = new Depoimento();
             d1.setEgresso(e1);
             d1.setTexto("Depoimento do Carlos");
@@ -157,9 +154,7 @@ public class DatabaseSeeder {
             d2.setStatus(StatusDepoimento.Enviado); // Ajuste conforme seu enum
             depoRepo.save(d2);
 
-            /* ==============================
-             * 7) CRIAR CURSO_EGRESSO (relacionamento N:N com atributos extras)
-             * ============================== */
+            //CRIAR CURSO_EGRESSO (relacionamento N:N com atributos extras)
             Curso_Egresso ce1 = new Curso_Egresso();
             ce1.setEgresso(e1);
             ce1.setCurso(c1);
@@ -175,6 +170,7 @@ public class DatabaseSeeder {
             cursoEgressoRepo.save(ce2);
 
             System.out.println(">>> Banco populado com dados de teste! <<<");
+        */
         };
     }
 }
