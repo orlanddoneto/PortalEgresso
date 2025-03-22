@@ -102,7 +102,7 @@ public class EgressoController {
     }
 
     @GetMapping("/{id}/cursos")
-    public ResponseEntity<Page<Curso>> getCursosByEgresso(@PathVariable Integer idEgresso, Pageable pageable) {
+    public ResponseEntity<Page<Curso>> getCursosByEgresso(@PathVariable("id") Integer idEgresso, Pageable pageable) {
         Page<Curso> cursos = cursoEgressoService.findCursosByEgressoId(idEgresso,pageable);
         return ResponseEntity.ok().body(cursos);
     }

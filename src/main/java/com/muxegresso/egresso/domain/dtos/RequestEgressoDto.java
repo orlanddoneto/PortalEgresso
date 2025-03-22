@@ -56,4 +56,7 @@ public class RequestEgressoDto implements Serializable {
     private String url_foto;
 
 
+    private boolean homologar;
+
+
 }

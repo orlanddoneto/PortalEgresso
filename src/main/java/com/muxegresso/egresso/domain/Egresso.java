@@ -61,6 +61,7 @@ public class Egresso extends RepresentationModel<Egresso> implements Serializabl
     @Column(length = 255)
     private String url_foto;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "egresso")
     private Set<Curso_Egresso> egressoCursos = new HashSet<>();
 

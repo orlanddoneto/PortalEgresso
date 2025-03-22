@@ -37,6 +37,7 @@ public class Curso implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "oportunidade_id")) // FK para Oportunidade
     private Set<Oportunidade> oportunidades = new HashSet<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "curso")
     private Set<Curso_Egresso> cursoEgressos = new HashSet<>();
 
