@@ -12,6 +12,8 @@ public interface CoordenadorService {
     
     boolean efetuarLogin(String email, String senha);
 
+    Page<Coordenador> getCoordenadoresByName(String name, Pageable pageable);
+
     Coordenador save(@Valid Coordenador coordenador);
 
     Page<Coordenador> findAll(Pageable pageable);

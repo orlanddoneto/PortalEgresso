@@ -22,6 +22,8 @@ public interface EgressoService {
 
     Optional<Egresso> getEgressoByCpf(@NotBlank String cpf);
 
+    Page<Egresso> getEgressosByName(String nome, Pageable pageable);
+
     ApiResponse updateEgresso(@Valid RequestEgressoDto requestEgressoDto);
 
     boolean existsByCpf(@NotBlank String cpf);

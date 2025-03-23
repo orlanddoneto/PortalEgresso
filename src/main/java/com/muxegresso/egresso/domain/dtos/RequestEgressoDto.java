@@ -55,8 +55,7 @@ public class RequestEgressoDto implements Serializable {
     @JsonView({EgressoView.ImageUpdate.class})
     private String url_foto;
 
-
-    private boolean homologar;
+    private boolean homologado;
 
 
 }

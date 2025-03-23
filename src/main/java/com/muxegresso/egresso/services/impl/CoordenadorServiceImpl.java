@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -34,10 +35,18 @@ public class CoordenadorServiceImpl implements CoordenadorService {
     @Autowired
     DepoimentoRepository depoimentoRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public boolean efetuarLogin(String email, String senha){
         Coordenador coordenador = coordenadorRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Email não existente na base de dados."));
         if (coordenador.getSenha().equals(senha)) return true;
         return false;
+    }
+
+    @Override
+    public Page<Coordenador> getCoordenadoresByName(String name, Pageable pageable) {
+        return coordenadorRepository.findByNomeContainingIgnoreCase(name, pageable);
     }
 
     @Transactional
@@ -45,6 +54,7 @@ public class CoordenadorServiceImpl implements CoordenadorService {
         if (coordenadorRepository.existsByEmail(coordenador.getEmail())) {
             throw new RuntimeException("O e-mail informado já está em uso. Por favor, tente outro!");
         }
+        coordenador.setSenha(passwordEncoder.encode(coordenador.getSenha()));
         return coordenadorRepository.save(coordenador);
     }
 
@@ -54,6 +64,10 @@ public class CoordenadorServiceImpl implements CoordenadorService {
         }
         Coordenador coordenador = coordenadorRepository.findById(id).orElseThrow(()->new RuntimeException("ID não presente no sistema."));
         return coordenador;
+    }
+
+    public Page<Coordenador> getCoordenadorByName(String nome, Pageable pageable) {
+        return coordenadorRepository.findByNomeContainingIgnoreCase(nome, pageable);
     }
 
     @Override

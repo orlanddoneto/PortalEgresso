@@ -2,9 +2,12 @@ package com.muxegresso.egresso.controllers;
 
 import com.muxegresso.egresso.domain.ApiResponse;
 import com.muxegresso.egresso.domain.Coordenador;
+import com.muxegresso.egresso.domain.dtos.RequestCoordenadorDto;
+import com.muxegresso.egresso.domain.dtos.RequestEgressoDto;
 import com.muxegresso.egresso.services.CoordenadorService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,16 +25,25 @@ public class CoordenadorController {
     @Autowired
     private CoordenadorService coordenadorService;
 
-    @GetMapping
-    public ResponseEntity<Page<Coordenador>> findAll(Pageable pageable){
-        Page<Coordenador> list = coordenadorService.findAll(pageable);
+    private ModelMapper modelMappper = new ModelMapper();
 
-        return ResponseEntity.ok().body(list);
+    @GetMapping
+    public ResponseEntity<Page<RequestCoordenadorDto>> findAll(Pageable pageable){
+        Page<RequestCoordenadorDto> coordenadorDtos = coordenadorService.findAll(pageable).map(cor -> modelMappper.map(cor, RequestCoordenadorDto.class));
+
+        return ResponseEntity.ok().body(coordenadorDtos);
     }
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Coordenador> findById(@PathVariable Integer id){
+    public ResponseEntity<RequestCoordenadorDto> findById(@PathVariable Integer id){
         Coordenador coordenador = coordenadorService.findById(id);
-        return ResponseEntity.ok().body(coordenador);
+        return ResponseEntity.ok().body(modelMappper.map(coordenador, RequestCoordenadorDto.class));
+    }
+
+    @GetMapping("/by-name/{name}")
+    public ResponseEntity<Page<RequestCoordenadorDto>> getEgressoByName(@PathVariable String name, Pageable pageable){
+        var egressos = coordenadorService.getCoordenadoresByName(name, pageable).map(coordenador -> modelMappper.map(coordenador, RequestCoordenadorDto.class));
+
+        return ResponseEntity.status(HttpStatus.OK).body(egressos);
     }
     @PostMapping
     @Transactional

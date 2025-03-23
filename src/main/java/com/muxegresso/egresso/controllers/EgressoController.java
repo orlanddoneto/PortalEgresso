@@ -5,6 +5,7 @@ import com.muxegresso.egresso.domain.*;
 import com.muxegresso.egresso.domain.dtos.RequestEgressoDto;
 import com.muxegresso.egresso.domain.dtos.UsuarioDTO;
 import com.muxegresso.egresso.services.Curso_EgressoService;
+import com.muxegresso.egresso.services.EgressoService;
 import com.muxegresso.egresso.services.impl.EgressoServiceImpl;
 import com.muxegresso.egresso.specifications.SpecificationTemplate;
 import jakarta.transaction.Transactional;
@@ -27,7 +28,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class EgressoController {
 
     @Autowired
-    private EgressoServiceImpl egressoServiceImpl;
+    private EgressoService egressoServiceImpl;
 
     private ModelMapper modelMappper = new ModelMapper();
 
@@ -51,6 +52,13 @@ public class EgressoController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cpf not found. ");
         }
         return ResponseEntity.status(HttpStatus.OK).body(egresso.get());
+    }
+
+    @GetMapping("/by-name/{name}")
+    public ResponseEntity<Page<RequestEgressoDto>> getEgressoByName(@PathVariable String name, Pageable pageable){
+        var egressos = egressoServiceImpl.getEgressosByName(name, pageable).map(egresso -> modelMappper.map(egresso, RequestEgressoDto.class));
+
+        return ResponseEntity.status(HttpStatus.OK).body(egressos);
     }
 
 

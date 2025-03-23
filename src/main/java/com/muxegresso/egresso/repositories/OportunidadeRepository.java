@@ -1,5 +1,6 @@
 package com.muxegresso.egresso.repositories;
 
+import com.muxegresso.egresso.domain.Egresso;
 import com.muxegresso.egresso.domain.Oportunidade;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,4 +16,6 @@ public interface OportunidadeRepository extends JpaRepository<Oportunidade, Inte
 
     @Query(value = "SELECT * FROM tb_oportunidade WHERE created_at >= CURRENT_DATE - CAST(:dias || ' days' AS INTERVAL)", nativeQuery = true)
     Page<Oportunidade> findOportunidadesRecentes(@Param("dias") int dias, Pageable pageable);
+
+    Page<Oportunidade> findByDescricaoContainingIgnoreCase(String descricao, Pageable pageable);
 }

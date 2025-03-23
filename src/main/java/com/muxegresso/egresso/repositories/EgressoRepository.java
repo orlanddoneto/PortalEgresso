@@ -28,4 +28,5 @@ public interface EgressoRepository extends JpaRepository<Egresso, Integer>, JpaS
     @Query("SELECT c FROM Egresso e JOIN e.cargos c WHERE e.id = :id")
     Page<Cargo> findCargosById(@Param("id") Integer id, Pageable pageable);
 
+    Page<Egresso> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
 }

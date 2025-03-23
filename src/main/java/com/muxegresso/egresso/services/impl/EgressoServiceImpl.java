@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,6 +37,8 @@ import java.util.Optional;
 
         private final ModelMapper modelMapper = new ModelMapper();
 
+        @Autowired
+        private PasswordEncoder passwordEncoder;
 
         @Override
         public Page<Egresso> findAllEgresso(Pageable pageable) {
@@ -46,6 +49,10 @@ import java.util.Optional;
         public Optional<Egresso> getEgressoByCpf(String cpf) {
             //return modelMapper.map(egressoRepository.findByCpf(cpf), RequestEgressoDto.class);
             return egressoRepository.findByCpf(cpf);
+        }
+
+        public Page<Egresso> getEgressosByName(String nome, Pageable pageable) {
+            return egressoRepository.findByNomeContainingIgnoreCase(nome, pageable);
         }
 
         @Override
@@ -67,6 +74,8 @@ import java.util.Optional;
         public Egresso save(RequestEgressoDto egresso) {
             var egressoEntity = modelMapper.map(egresso, Egresso.class);
             egressoEntity.setUserStatus(UserStatus.ACTIVE);
+            egressoEntity.setHomologado(false);
+            egressoEntity.setSenha(passwordEncoder.encode(egressoEntity.getSenha()));
             egressoEntity.setCreatedAt(LocalDateTime.now(ZoneId.of("UTC")));
             egressoEntity.setUpdatedAt(LocalDateTime.now(ZoneId.of("UTC")));
 
