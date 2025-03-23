@@ -46,4 +46,9 @@ public class CursoServiceImpl implements CursoService {
 
         return cursoRepository.save(cursoObj);
     }
+
+    @Override
+    public Page<Curso> getCursosByName(String name, Pageable pageable) {
+        return cursoRepository.findByNomeContainingIgnoreCase(name, pageable);
+    }
 }

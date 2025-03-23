@@ -1,5 +1,6 @@
 package com.muxegresso.egresso.services;
 
+import aj.org.objectweb.asm.commons.Remapper;
 import com.muxegresso.egresso.domain.Curso;
 import com.muxegresso.egresso.repositories.CursoRepository;
 import jakarta.validation.Valid;
@@ -21,4 +22,6 @@ public interface CursoService{
     Curso delete(Integer id);
 
     Curso update(@Valid Curso curso);
+
+    Page<Curso> getCursosByName(String name, Pageable pageable);
 }
