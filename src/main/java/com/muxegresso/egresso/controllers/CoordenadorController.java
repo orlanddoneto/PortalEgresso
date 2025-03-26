@@ -2,6 +2,7 @@ package com.muxegresso.egresso.controllers;
 
 import com.muxegresso.egresso.domain.ApiResponse;
 import com.muxegresso.egresso.domain.Coordenador;
+import com.muxegresso.egresso.domain.dtos.CreateCoordenadorDto;
 import com.muxegresso.egresso.domain.dtos.RequestCoordenadorDto;
 import com.muxegresso.egresso.domain.dtos.RequestEgressoDto;
 import com.muxegresso.egresso.services.CoordenadorService;
@@ -47,16 +48,16 @@ public class CoordenadorController {
     }
     @PostMapping
     @Transactional
-    public ResponseEntity<Object> create(@RequestBody @Valid Coordenador coordenador){
-        if (coordenadorService.existsByEmail(coordenador.getEmail())){
+    public ResponseEntity<Object> create(@RequestBody @Valid CreateCoordenadorDto coordenadorDto){
+        if (coordenadorService.existsByEmail(coordenadorDto.getEmail())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse(false, "Email já cadastrado !"));
         }
 
-        coordenador = coordenadorService.save(coordenador);
+        var response = coordenadorService.save(modelMappper.map(coordenadorDto, Coordenador.class));
         URI uri =
                 ServletUriComponentsBuilder.fromCurrentRequest().path("/{id").buildAndExpand(new Coordenador()).toUri();
 
-        return ResponseEntity.created(uri).body(coordenador);
+        return ResponseEntity.created(uri).body(response);
     }
 
     @DeleteMapping(value = "/totalDelete/{id}")

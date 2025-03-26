@@ -1,5 +1,6 @@
 package com.muxegresso.egresso.controllers;
 
+import com.muxegresso.egresso.domain.ApiResponse;
 import com.muxegresso.egresso.domain.Cargo;
 import com.muxegresso.egresso.services.CargoService;
 import jakarta.transaction.Transactional;
@@ -30,6 +31,12 @@ public class CargoController {
     public ResponseEntity<Cargo> findById(@PathVariable Integer id) {
         Cargo cargo = cargoService.findById(id);
         return ResponseEntity.ok().body(cargo);
+    }
+
+    @PostMapping("/vincular-cargo")
+    public ResponseEntity<ApiResponse> vincularCargo(@RequestParam Integer idCargo, @RequestParam Integer idEgresso) {
+        ApiResponse response = cargoService.vincularCargoAoEgresso(idCargo, idEgresso);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping

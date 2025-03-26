@@ -3,6 +3,7 @@ package com.muxegresso.egresso.controllers;
 import com.muxegresso.egresso.domain.Curso;
 import com.muxegresso.egresso.domain.Depoimento;
 import com.muxegresso.egresso.domain.Egresso;
+import com.muxegresso.egresso.domain.dtos.RequestCursoDto;
 import com.muxegresso.egresso.domain.dtos.RequestEgressoDto;
 import com.muxegresso.egresso.services.CursoService;
 import com.muxegresso.egresso.services.Curso_EgressoService;
@@ -32,10 +33,10 @@ public class CursoController {
     private ModelMapper modelMappper = new ModelMapper();
 
     @GetMapping
-    public ResponseEntity<Page<Curso>> findAll(Pageable pageable){
-        Page<Curso> list = cursoService.findAll(pageable);
+    public ResponseEntity<Page<RequestCursoDto>> findAll(Pageable pageable){
+        var cursos = cursoService.findAll(pageable);
 
-        return ResponseEntity.ok().body(list);
+        return ResponseEntity.ok().body(cursos);
     }
     @GetMapping(value = "/{id}")
     public ResponseEntity<Curso> findById(@PathVariable Integer id){
