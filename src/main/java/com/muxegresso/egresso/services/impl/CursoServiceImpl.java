@@ -1,10 +1,16 @@
 package com.muxegresso.egresso.services.impl;
 
 
+import com.muxegresso.egresso.domain.ApiResponse;
+import com.muxegresso.egresso.domain.Cargo;
 import com.muxegresso.egresso.domain.Curso;
+import com.muxegresso.egresso.domain.Egresso;
+import com.muxegresso.egresso.domain.dtos.RequestCursoDto;
 import com.muxegresso.egresso.repositories.CursoRepository;
 import com.muxegresso.egresso.services.CursoService;
+import com.muxegresso.egresso.services.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +24,8 @@ public class CursoServiceImpl implements CursoService {
     @Autowired
     CursoRepository cursoRepository;
 
+    ModelMapper modelMapper = new ModelMapper();
+
     @Transactional
     public Curso save(@Valid Curso egresso){
         return cursoRepository.save(egresso);
@@ -28,9 +36,10 @@ public class CursoServiceImpl implements CursoService {
         return curso;
     }
 
-    public Page<Curso> findAll(Pageable pageable){
-        return cursoRepository.findAll(pageable);
+    public Page<RequestCursoDto> findAll(Pageable pageable){
+        return cursoRepository.findAll(pageable).map(curso -> modelMapper.map(curso, RequestCursoDto.class));
     }
+
 
     @Transactional
     public Curso delete(Integer id){

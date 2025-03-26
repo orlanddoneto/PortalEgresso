@@ -1,8 +1,11 @@
 package com.muxegresso.egresso.services;
 
+import com.muxegresso.egresso.domain.ApiResponse;
 import com.muxegresso.egresso.domain.Cargo;
 import com.muxegresso.egresso.domain.Egresso;
 import com.muxegresso.egresso.repositories.CargoRepository;
+import com.muxegresso.egresso.repositories.EgressoRepository;
+import com.muxegresso.egresso.services.exceptions.ResourceNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class CargoService {
     @Autowired
     CargoRepository cargoRepository;
+
+    @Autowired
+    EgressoRepository egressoRepository;
 
     @Transactional
     public Cargo save(@Valid Cargo cargo){
@@ -35,6 +41,19 @@ public class CargoService {
         Cargo cargo = this.findById(id);
         cargoRepository.delete(cargo);
         return cargo;
+    }
+
+    public ApiResponse vincularCargoAoEgresso(Integer cargoId, Integer egressoId) {
+        Egresso egresso = egressoRepository.findById(egressoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Egresso ID: " + egressoId));
+
+        Cargo cargo = cargoRepository.findById(cargoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cargo ID: " + cargoId));
+
+        cargo.setEgresso(egresso); // vincula o cargo ao egresso
+        cargoRepository.save(cargo); // salva a atualização
+
+        return new ApiResponse(true, "Cargo vinculado ao egresso com sucesso!");
     }
 
     @Transactional

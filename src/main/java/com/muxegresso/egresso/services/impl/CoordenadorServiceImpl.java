@@ -119,6 +119,7 @@ public class CoordenadorServiceImpl implements CoordenadorService {
 
         // Copia todas as propriedades do objeto recebido para o objeto gerenciado (exceto o id)
         BeanUtils.copyProperties(coordenador, coordenadorObj, "id");
+        coordenadorObj.setSenha(passwordEncoder.encode(coordenador.getSenha()));
         return coordenadorRepository.save(coordenadorObj);
     }
 

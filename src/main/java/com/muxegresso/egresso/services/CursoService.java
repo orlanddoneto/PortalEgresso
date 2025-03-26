@@ -2,6 +2,7 @@ package com.muxegresso.egresso.services;
 
 import aj.org.objectweb.asm.commons.Remapper;
 import com.muxegresso.egresso.domain.Curso;
+import com.muxegresso.egresso.domain.dtos.RequestCursoDto;
 import com.muxegresso.egresso.repositories.CursoRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public interface CursoService{
 
     Curso findById( Integer id);
 
-    Page<Curso> findAll(Pageable pageable);
+    Page<RequestCursoDto> findAll(Pageable pageable);
 
     Curso delete(Integer id);
 
