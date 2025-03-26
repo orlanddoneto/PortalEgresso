@@ -1,10 +1,13 @@
+server:
+  port: 8089
+
 spring:
   datasource:
     url: jdbc:postgresql://ep-bitter-wildflower-a5ufwbu6.us-east-2.aws.neon.tech/muxegresso?user=muxegresso_owner&password=FYxjCvNy0c8O&sslmode=require
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -13,6 +16,7 @@ api:
   security:
     token:
       secret: ${JWT_TOKE:mux123}
+
 
 
 
