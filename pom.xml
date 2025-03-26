@@ -12,7 +12,8 @@
 	<artifactId>egresso</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>egresso</name>
-	<description>Demo project for Spring Boot</description>
+	<packaging>war</packaging>
+	<description>Portal do Egreso Lab</description>
 	<url/>
 	<licenses>
 		<license/>
