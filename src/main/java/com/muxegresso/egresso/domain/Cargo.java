@@ -1,9 +1,11 @@
 package com.muxegresso.egresso.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -27,16 +29,14 @@ public class Cargo implements Serializable {
     @Column(nullable = false, length = 255)
     private String descricao;
 
+    @PositiveOrZero
+    private Double salario;
+
     @Column(nullable = false, length = 255)
     private String local;
 
-    @Column(nullable = false, length = 255)
-    private Integer ano_inicio;
-
-    @Column(nullable = false, length = 255)
-    private Integer ano_fim;
-
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "id_egresso")
     private Egresso egresso;
 }

@@ -2,6 +2,7 @@ package com.muxegresso.egresso.domain.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.muxegresso.egresso.domain.enums.AproveStatus;
 import com.muxegresso.egresso.domain.enums.UserStatus;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -38,8 +39,6 @@ public class RequestEgressoDto implements Serializable {
     @JsonView({EgressoView.RegistrationPost.class, EgressoView.EgressoUpdate.class})
     private String email;
 
-    private UserStatus status;
-
     @NotBlank(groups = {EgressoView.RegistrationPost.class, EgressoView.PasswordUpdate.class })
     @JsonView({EgressoView.RegistrationPost.class, EgressoView.PasswordUpdate.class,EgressoView.EgressoUpdate.class})
     private String senha;
@@ -55,7 +54,16 @@ public class RequestEgressoDto implements Serializable {
     @JsonView({EgressoView.ImageUpdate.class})
     private String url_foto;
 
-    private boolean homologado;
+    private AproveStatus homologado;
+
+    @JsonView({EgressoView.RegistrationPost.class,  EgressoView.EgressoUpdate.class})
+    private Integer idCurso;
+
+    @JsonView({EgressoView.RegistrationPost.class,  EgressoView.EgressoUpdate.class})
+    private Integer Ano_inicio;
+
+    @JsonView({EgressoView.RegistrationPost.class,  EgressoView.EgressoUpdate.class})
+    private Integer Ano_fim;
 
 
 }

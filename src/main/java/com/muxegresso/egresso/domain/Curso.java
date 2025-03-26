@@ -31,6 +31,13 @@ public class Curso implements Serializable {
     @Column(nullable = false, length = 255)
     private String nivel;
 
+    @Column(nullable = false, length = 255)
+    private Integer ano_inicio;
+
+    @Column(nullable = false, length = 255)
+    private Integer ano_fim;
+
+
     @ManyToMany
     @JoinTable(name = "curso_oportunidade",           // nome da tabela de junção
             joinColumns = @JoinColumn(name = "curso_id"),    // FK para Curso

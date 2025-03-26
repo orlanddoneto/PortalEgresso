@@ -52,7 +52,7 @@ public class Coordenador implements UserDetails, Serializable {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ADMIN_ROLE"));
+        return List.of(new SimpleGrantedAuthority("COORDENADOR_ROLE"));
     }
 
     @Override

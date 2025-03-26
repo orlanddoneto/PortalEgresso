@@ -1,5 +1,6 @@
 package com.muxegresso.egresso.domain;
 
+import com.muxegresso.egresso.domain.enums.AproveStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -32,12 +33,20 @@ public class Oportunidade {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @Column(nullable = false)
+    private String titulo;
+
+    @Column(columnDefinition = "TEXT")
+    private String descricao;
+
     @ManyToMany(mappedBy = "oportunidades") // indica que a "dona" do relacionamento é Curso
     @JsonIgnore
     private Set<Curso> cursos = new HashSet<>();
 
-    @Column(columnDefinition = "TEXT")
-    private String descricao;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "egresso_id")
+    private Egresso egresso;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -45,6 +54,12 @@ public class Oportunidade {
     @Column(length = 255, nullable = false)
     private String link;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private boolean homologado;
+    private AproveStatus homologadoStatus = AproveStatus.PENDING;
+
+    @Transient
+    public Integer getEgresso_id() {
+        return egresso != null ? egresso.getId() : null;
+    }
 }

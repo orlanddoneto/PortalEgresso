@@ -4,6 +4,7 @@ package com.muxegresso.egresso.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.muxegresso.egresso.domain.enums.AproveStatus;
 import com.muxegresso.egresso.domain.enums.UserStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -42,7 +43,6 @@ public class Egresso extends RepresentationModel<Egresso> implements Serializabl
     @Column(nullable = false, length = 255)
     private String nome;
 
-    @NotBlank(message = "Digite a senha!")
     @Column(nullable = false, length = 255)
     private String senha;
 
@@ -77,6 +77,9 @@ public class Egresso extends RepresentationModel<Egresso> implements Serializabl
     @OneToMany(mappedBy = "egresso")
     Set<Depoimento> depoimentos = new HashSet<>();
 
+    @OneToMany(mappedBy = "egresso", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Oportunidade> oportunidadesEnviadas = new HashSet<>();
+
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
@@ -84,8 +87,9 @@ public class Egresso extends RepresentationModel<Egresso> implements Serializabl
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @Column(nullable = false)
-    private boolean homologado;
+    @Enumerated(EnumType.STRING)
+    @Column
+    private AproveStatus homologadoStatus = AproveStatus.PENDING;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

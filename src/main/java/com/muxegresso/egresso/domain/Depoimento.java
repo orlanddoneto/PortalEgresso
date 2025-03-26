@@ -2,6 +2,7 @@ package com.muxegresso.egresso.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.muxegresso.egresso.domain.enums.AproveStatus;
 import com.muxegresso.egresso.domain.enums.StatusDepoimento;
 import com.muxegresso.egresso.domain.enums.UserStatus;
 import jakarta.persistence.*;
@@ -29,6 +30,7 @@ public class Depoimento implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_egresso")
     private Egresso egresso;
@@ -39,8 +41,14 @@ public class Depoimento implements Serializable {
     @Column(nullable = false, length = 255)
     private Date data;
 
+    @Transient
+    public Integer getId_Egresso() {
+        return egresso != null ? egresso.getId() : null;
+    }
+
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private boolean homologado;
+    private AproveStatus homologadoStatus = AproveStatus.PENDING;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -49,8 +57,5 @@ public class Depoimento implements Serializable {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    private StatusDepoimento status;
 
 }
