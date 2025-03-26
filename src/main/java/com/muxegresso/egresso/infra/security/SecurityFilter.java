@@ -37,12 +37,14 @@ public class SecurityFilter extends OncePerRequestFilter {
 
             String role = tokenService.getRoleFromToken(tokenJWT); // pegando o role do usuario
             //System.out.println("filter: "+subject+role);
-            if ("client".equals(role)) {
+            System.out.println(role);
+            if ("EGRESSO_ROLE".equals(role)) {
+                System.out.println("regresso token");
                 var usuario = egressoRepository.findByEmail(subject).orElseThrow(() -> new ResourceNotFoundException(subject));
                 var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else if ("admin".equals(role)) {
-                var usuario = egressoRepository.findByEmail(subject).orElseThrow(() -> new ResourceNotFoundException(subject));
+            } else if ("COORDENADOR_ROLE".equals(role)) {
+                var usuario = coordenadorRepository.findByEmail(subject).orElseThrow(() -> new ResourceNotFoundException(subject));
                 var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {

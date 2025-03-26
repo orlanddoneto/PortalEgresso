@@ -23,12 +23,12 @@ public class TokenService {
 
     // gerar token para Client
     public String genToken(Egresso egresso) {
-        return generateToken(egresso.getEmail(), egresso.getId(), "client");
+        return generateToken(egresso.getEmail(), egresso.getId(), "EGRESSO_ROLE");
     }
 
     // gerar token para Admin
     public String genToken(Coordenador coordenador) {
-        return generateToken(coordenador.getEmail(), coordenador.getId(), "admin");
+        return generateToken(coordenador.getEmail(), coordenador.getId(), "COORDENADOR_ROLE");
     }
 
     public String generateToken(String subject, Integer id, String role){
