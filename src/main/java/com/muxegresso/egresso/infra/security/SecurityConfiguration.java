@@ -44,6 +44,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/v1/curso").permitAll()
                         .requestMatchers(HttpMethod.GET, "v1/reports/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/cargo").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/v1/egresso").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
@@ -64,7 +65,7 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Frontend
+        configuration.setAllowedOrigins(List.of("http://localhost:4200", "http://3.21.93.67:4200")); // Frontend
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true); // se estiver usando withCredentials
